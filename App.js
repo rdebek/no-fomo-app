@@ -10,30 +10,51 @@ import {
   TouchableOpacity,
   Linking,
   Image,
+  Switch,
 } from "react-native";
-import App1 from "./App2";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import WelcomeScreen from "./app/screens/WelcomeScreen";
 
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Home Screen</Text>
       <Button title="kliknij" onPress={() => navigation.navigate("Map")} />
+      <Button
+        title="kliknij do welcome screena"
+        onPress={() => navigation.navigate("WelcomeScreen")}
+      />
     </View>
   );
+}
+
+function helper() {
+  arr = [];
+  for (i = 0; i < 5; i++) {
+    arr.push(i);
+  }
+  return arr;
 }
 
 function Map({ navigation }) {
   const [count, setCount] = React.useState(0);
   const [props, setProps] = React.useState("properties");
   const [visible, setVisible] = React.useState(true);
+  const [marker, setMarker] = React.useState(0);
+  const [markers, setMarkers] = React.useState([]);
+  // const [displayMode, setDisplayMode] = React.useState(false);
+  // const changeMode = () => {
+  //   setDisplayMode(!displayMode);
+  // };
+  const getMode = () => {
+    const hour = new Date().getHours();
+    return hour >= 20 || hour <= 7;
+  };
   return (
     <View style={styles.container}>
       <MapView
-        ref={(map) => {
-          this.map = map;
-        }}
+        showsUserLocation={true}
+        userInterfaceStyle={getMode() ? "dark" : "light"}
         initialRegion={{
           latitude: 37.78825,
           longitude: -122.4324,
@@ -41,16 +62,55 @@ function Map({ navigation }) {
           longitudeDelta: 0.0421,
         }}
         style={styles.map}
-        onPress={(e) => console.log("wtf")}
+        onPress={(e) => {
+          let cords = e.nativeEvent.coordinate;
+          let helper = markers;
+          helper.push(cords);
+          setMarkers(helper);
+          setMarker(cords);
+        }}
       >
-        <Text
+        {markers.map((coordinates) => (
+          <Marker
+            coordinate={{
+              latitude: coordinates.latitude,
+              longitude: coordinates.longitude,
+            }}
+          />
+        ))}
+        {/* 
+        {
+          <Marker
+            coordinate={{
+              latitude: marker.latitude,
+              longitude: marker.longitude,
+            }}
+          />
+        } */}
+        {/* <Switch
           style={{
             position: "absolute",
-            bottom: 100,
+            top: 200,
+            right: 20,
+            transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }],
           }}
-        >
-          dsdsadsd
-        </Text>
+          thumbColor={displayMode ? "black" : "white"}
+          value={displayMode}
+          ios_backgroundColor="red"
+          onValueChange={changeMode}
+        /> */}
+
+        {helper().map((int) => (
+          <Text
+            key={int}
+            style={{
+              position: "absolute",
+              bottom: int * 100,
+            }}
+          >
+            {int.toString()} element
+          </Text>
+        ))}
         <Marker
           coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
           title="siema"
@@ -137,12 +197,9 @@ export default function App() {
     <NavigationContainer>
       <StatusBar style="dark" />
       <stack.Navigator screenOptions={{ headerShown: false }}>
-        <stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ title: "siema" }}
-        />
+        <stack.Screen name="Home" component={HomeScreen} />
         <stack.Screen name="Map" component={Map} />
+        <stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
       </stack.Navigator>
     </NavigationContainer>
   );

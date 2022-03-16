@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ReactProject",
-    "slug": "ReactProject",
+    "name": "wpam",
+    "slug": "wpam",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./app/assets/assets/icon.png",
