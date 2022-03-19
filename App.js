@@ -17,6 +17,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import WelcomeScreen from "./app/screens/WelcomeScreen";
 import LoginScreen from "./app/screens/LoginScreen";
 import RegisterScreen from "./app/screens/RegisterScreen";
+import EmailConfirmationScreen from "./app/screens/EmailConfirmationScreen";
 
 function HomeScreen({ navigation }) {
   return (
@@ -203,6 +204,7 @@ export default function App() {
         <stack.Screen name="Home" component={HomeScreen} />
         <stack.Screen name="Map" component={Map} />
         <stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+        <stack.Screen name="EmailScreen" component={EmailConfirmationScreen} />
         <stack.Screen name="RegisterScreen" component={RegisterScreen} />
       </stack.Navigator>
     </NavigationContainer>
