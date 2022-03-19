@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View } from "react-native";
 
-function WelcomeScreen(navigation) {
+function WelcomeScreen({navigation}) {
   return (
     <View
       style={{
