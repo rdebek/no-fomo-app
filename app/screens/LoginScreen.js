@@ -1,24 +1,23 @@
-import React, { useRef } from 'react';
-import { Button, TextInput, View, StyleSheet, Text, Image, TouchableOpacity, TouchableHighlight, Pressable } from 'react-native';
+import React from 'react';
+import {TextInput, View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
+
+
 
 function LoginScreen({navigation}) {
+
     const [login, setLogin] = React.useState("Login");
     const [password, setPassword] = React.useState("Password");
     const [passVisibility, setPassVisibility] = React.useState(false);
 
     return (
-        <View style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-        }}>            
+        <View style={styles.container}>            
         <Text style={styles.appName}>
         NO FOMO
         </Text>
             <Image style={styles.logo} source={require('../assets/app_logo.jpg')} />
  
-            <TextInput textAlign='center' autoCorrect={false} spellCheck={false} autoCapitalize='none' clearTextOnFocus={true} selectionColor="black" style={styles.textInput} value={login} onChangeText={setLogin} ></TextInput>
-            <TextInput textAlign='center' autoCorrect={false} spellCheck={false} autoCapitalize='none' clearTextOnFocus={true} secureTextEntry={passVisibility} selectionColor="black" value={password} style={styles.textInput} onChangeText={handlePassword} ></TextInput>
+            <TextInput  keyboardType='email-address' textAlign='center' autoCorrect={false} spellCheck={false} autoCapitalize='none' clearTextOnFocus={true} selectionColor="black" style={styles.textInput} value={login} onChangeText={setLogin} />
+            <TextInput textAlign='center' autoCorrect={false} spellCheck={false} autoCapitalize='none' clearTextOnFocus={true} secureTextEntry={passVisibility} selectionColor="black" value={password} style={styles.textInput} onChangeText={handlePassword} />
                 <TouchableOpacity  onPress={handleLogin}>
             <View style={styles.logIn}>
                 <Text style={styles.logInText} >
@@ -45,12 +44,15 @@ function LoginScreen({navigation}) {
     function handlePassword(pass){
         setPassword(pass);
         setPassVisibility(true);
-    }
+    };
 }
 
-
-
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     textInput: {
         paddingHorizontal: 5,
         margin: 5,
@@ -93,10 +95,9 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     registerButton: {
-        color: 'green',
+        color: '#EE4E34',
         fontWeight:  'bold',
     }
 })
-
 
 export default LoginScreen;
