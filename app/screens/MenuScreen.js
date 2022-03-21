@@ -1,12 +1,30 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
 import { styles } from "../styles/MenuScreenStyles";
+import { footer } from "../components/Footer";
 
-function MenuScreen(props) {
+function MenuScreen({ navigation }) {
   return (
-    <View style={styles.container}>
-      <Text>Menu.</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      {footer}
+      <View style={styles.optionsContainer}>
+        <TouchableOpacity
+          style={styles.menuOptionView}
+          onPress={() => navigation.navigate("MapScreen")}
+        >
+          <Text style={styles.menuOptionText}>Map</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.menuOptionView}>
+          <Text style={styles.menuOptionText}>Followed areas</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuOptionView}
+          onPress={() => navigation.navigate("LoginScreen")}
+        >
+          <Text style={styles.menuOptionText}>Logout</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 }
 

@@ -66,6 +66,7 @@ function LoginScreen({ navigation }) {
   function handleLogin() {
     console.log(`login: ${login}`);
     console.log(`pass: ${password}`);
+    navigation.navigate("MenuScreen");
   }
 
   function handlePassword(pass) {

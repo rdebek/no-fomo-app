@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import { backgroundColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 import { Colors } from "./Colors";
 
 export const styles = StyleSheet.create({
@@ -17,7 +16,7 @@ export const styles = StyleSheet.create({
   textInfo: {
     margin: 10,
     fontSize: 20,
-    textAlign: 'justify',
+    textAlign: "justify",
   },
   resendContainer: {
     flex: 1,
@@ -52,7 +51,7 @@ export const styles = StyleSheet.create({
   resendInfo: {
     fontSize: 17,
     margin: 10,
-    textAlign: 'justify',
+    textAlign: "justify",
   },
   resend: {
     alignSelf: "center",
