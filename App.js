@@ -18,6 +18,7 @@ import WelcomeScreen from "./app/screens/WelcomeScreen";
 import LoginScreen from "./app/screens/LoginScreen";
 import RegisterScreen from "./app/screens/RegisterScreen";
 import EmailConfirmationScreen from "./app/screens/EmailConfirmationScreen";
+import MenuScreen from "./app/screens/MenuScreen";
 
 function HomeScreen({ navigation }) {
   return (
@@ -206,6 +207,7 @@ export default function App() {
         <stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
         <stack.Screen name="EmailScreen" component={EmailConfirmationScreen} />
         <stack.Screen name="RegisterScreen" component={RegisterScreen} />
+        <stack.Screen name="MenuScreen" component={MenuScreen} />
       </stack.Navigator>
     </NavigationContainer>
   );
