@@ -2,9 +2,10 @@ import React from "react";
 import { styles } from "../styles/MapScreenStyles";
 import MapView, { Callout, Marker } from "react-native-maps";
 import { View, Text, Image, TouchableOpacity, Linking } from "react-native";
+import { width, height } from "../components/Utility";
 
 function MapScreen({ navigation }) {
-  const [cords, setCords] = React.useState(0);
+  const [cords, setCords] = React.useState(null);
 
   const getMode = () => {
     const hour = new Date().getHours();
@@ -24,10 +25,9 @@ function MapScreen({ navigation }) {
         style={styles.map}
         onPress={(e) => {
           setCords(e.nativeEvent.coordinate);
-          console.log(cords);
         }}
       >
-        {cords != 0 && (
+        {cords && (
           <Marker
             coordinate={{
               latitude: cords.latitude,
@@ -43,7 +43,7 @@ function MapScreen({ navigation }) {
         )}
         <Marker
           coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
-          title="siema"
+          title="hello"
           description="piewszy marker"
           pinColor="purple"
         >
@@ -72,28 +72,25 @@ function MapScreen({ navigation }) {
         </Marker>
       </MapView>
       <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("MenuScreen");
-        }}
+        style={styles.backButton}
+        onPress={() => navigation.navigate("MenuScreen")}
       >
-        <View
-          style={{
-            height: 50,
-            backgroundColor: "tomato",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontWeight: "bold",
-              fontSize: 20,
-            }}
-          >
-            GO HOME
-          </Text>
-        </View>
+        <Image
+          style={styles.backButtonImage}
+          source={require("../assets/back_button.jpg")}
+        />
       </TouchableOpacity>
+
+      {cords && (
+        <TouchableOpacity
+          onPress={() => {
+            console.log("klik");
+          }}
+          style={styles.confirmButton}
+        >
+          <Text style={styles.confirmText}>CONFIRM</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
