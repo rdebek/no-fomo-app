@@ -19,6 +19,7 @@ export const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0.02 * height,
     left: 70,
+    borderWidth: 2,
   },
   confirmText: { color: "black", fontWeight: "bold" },
   backButton: {
@@ -31,9 +32,35 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     marginHorizontal: 10,
     bottom: 0.02 * height,
+    borderWidth: 2,
   },
   backButtonImage: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
+  },
+  popupView: {
+    height: 0.8 * height,
+    width: 0.8 * width,
+    position: "absolute",
+    top: 0.1 * height,
+    borderWidth: 5,
+    borderRadius: 40,
+    backgroundColor: "white",
+  },
+  iconsContainer: {
+    height: 50,
+    flexDirection: "row",
+  },
+  twitterContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    borderTopLeftRadius: 25,
+  },
+  instagramContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    borderTopRightRadius: 25,
   },
 });

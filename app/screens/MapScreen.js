@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useRef } from "react";
 import { styles } from "../styles/MapScreenStyles";
 import MapView, { Callout, Marker } from "react-native-maps";
-import { View, Text, Image, TouchableOpacity, Linking } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Linking,
+  SafeAreaView,
+  Animated,
+} from "react-native";
 import { width, height } from "../components/Utility";
+import { slideIn } from "../components/Animations";
+import Slider from "@react-native-community/slider";
+import { Colors } from "../styles/Colors";
 
 function MapScreen({ navigation }) {
   const [cords, setCords] = React.useState(null);
+  const [confirm, setConfirm] = React.useState(false);
+  const [twitterChosen, setTwitterChosen] = React.useState(true);
+  const [radius, setRadius] = React.useState(0);
+
+  const slideAnimation = useRef(new Animated.Value(width)).current;
+  const opacityAnimation = useRef(new Animated.Value(0)).current;
 
   const getMode = () => {
     const hour = new Date().getHours();
@@ -85,11 +102,78 @@ function MapScreen({ navigation }) {
         <TouchableOpacity
           onPress={() => {
             console.log("klik");
+            setConfirm(true);
+            slideIn(slideAnimation, opacityAnimation);
           }}
           style={styles.confirmButton}
         >
           <Text style={styles.confirmText}>CONFIRM</Text>
         </TouchableOpacity>
+      )}
+      {confirm && (
+        <Animated.View
+          style={[
+            styles.popupView,
+            {
+              left: slideAnimation,
+              opacity: opacityAnimation,
+            },
+          ]}
+        >
+          <View style={styles.iconsContainer}>
+            <TouchableOpacity
+              style={[
+                styles.twitterContainer,
+                { backgroundColor: twitterChosen ? "black" : null },
+              ]}
+              onPress={() => setTwitterChosen(true)}
+            >
+              <Image
+                style={{ width: 50, height: 41.125 }}
+                source={require("../assets/twitter_logo.webp")}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.instagramContainer,
+                { backgroundColor: twitterChosen ? null : "black" },
+              ]}
+              onPress={() => setTwitterChosen(false)}
+            >
+              <Image
+                style={{ width: 45, height: 45 }}
+                source={require("../assets/instagram_logo.png")}
+              />
+            </TouchableOpacity>
+          </View>
+          {twitterChosen && (
+            <View style={{ flex: 1, borderTopWidth: 2 }}>
+              <Text>Twitter</Text>
+            </View>
+          )}
+
+          {!twitterChosen && (
+            <View
+              style={{
+                flex: 1,
+                borderTopWidth: 2,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text>Radius: {radius}</Text>
+              <Slider
+                style={{ width: 200, height: 40 }}
+                minimumValue={0}
+                maximumValue={30}
+                step={1}
+                minimumTrackTintColor="black"
+                maximumTrackTintColor="red"
+                onValueChange={setRadius}
+              ></Slider>
+            </View>
+          )}
+        </Animated.View>
       )}
     </View>
   );
