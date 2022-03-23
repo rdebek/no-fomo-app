@@ -13,7 +13,7 @@ function LoginScreen({ navigation }) {
   const [login, setLogin] = React.useState("Login");
   const [password, setPassword] = React.useState("Password");
   const [passVisibility, setPassVisibility] = React.useState(false);
-  // test commit
+
   return (
     <View style={styles.container}>
       <Text style={styles.appName}>NO FOMO</Text>

@@ -11,7 +11,7 @@ import {
   Animated,
 } from "react-native";
 import { width, height } from "../components/Utility";
-import { slideIn } from "../components/Animations";
+import { slideIn, slideOut } from "../components/Animations";
 import Slider from "@react-native-community/slider";
 import { Colors } from "../styles/Colors";
 
@@ -33,15 +33,13 @@ function MapScreen({ navigation }) {
       <MapView
         showsUserLocation={true}
         userInterfaceStyle={getMode() ? "dark" : "light"}
-        initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
         style={styles.map}
         onPress={(e) => {
-          setCords(e.nativeEvent.coordinate);
+          if (!confirm) setCords(e.nativeEvent.coordinate);
+          else {
+            slideOut(slideAnimation, opacityAnimation);
+            setTimeout(() => setConfirm(false), 1500);
+          }
         }}
       >
         {cords && (
@@ -98,7 +96,7 @@ function MapScreen({ navigation }) {
         />
       </TouchableOpacity>
 
-      {cords && (
+      {cords && !confirm && (
         <TouchableOpacity
           onPress={() => {
             console.log("klik");
@@ -147,8 +145,36 @@ function MapScreen({ navigation }) {
             </TouchableOpacity>
           </View>
           {twitterChosen && (
-            <View style={{ flex: 1, borderTopWidth: 2 }}>
-              <Text>Twitter</Text>
+            <View
+              style={{
+                flex: 1,
+                borderTopWidth: 2,
+              }}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={{ fontWeight: "bold", fontSize: 30 }}>RADIUS</Text>
+                <Slider
+                  style={{ width: 200, height: 40 }}
+                  minimumValue={0}
+                  maximumValue={30}
+                  step={1}
+                  minimumTrackTintColor="black"
+                  maximumTrackTintColor="red"
+                  onValueChange={setRadius}
+                ></Slider>
+                <Text style={{ fontWeight: "bold", fontSize: 30 }}>
+                  {radius}km
+                </Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text>Advanced options placeholder</Text>
+              </View>
             </View>
           )}
 
@@ -160,18 +186,7 @@ function MapScreen({ navigation }) {
                 alignItems: "center",
                 justifyContent: "center",
               }}
-            >
-              <Text>Radius: {radius}</Text>
-              <Slider
-                style={{ width: 200, height: 40 }}
-                minimumValue={0}
-                maximumValue={30}
-                step={1}
-                minimumTrackTintColor="black"
-                maximumTrackTintColor="red"
-                onValueChange={setRadius}
-              ></Slider>
-            </View>
+            ></View>
           )}
         </Animated.View>
       )}
