@@ -64,7 +64,6 @@ export const styles = StyleSheet.create({
     borderTopRightRadius: 25,
   },
   textInput: {
-    // paddingHorizontal: 5,
     margin: 5,
     marginBottom: 15,
     borderColor: Colors.primary,

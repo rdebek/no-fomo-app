@@ -11,11 +11,14 @@ import {
   Animated,
   ScrollView,
   TextInput,
+  Pressable,
 } from "react-native";
-import { width, height } from "../components/Utility";
+import { width, height, handleSearch } from "../components/Utility";
 import { slideIn, slideOut } from "../components/Animations";
 import Slider from "@react-native-community/slider";
 import { Colors } from "../styles/Colors";
+import { MediaType } from "../components/MediaType";
+import * as WebBrowser from "expo-web-browser";
 
 function MapScreen({ navigation }) {
   const [cords, setCords] = React.useState(null);
@@ -26,6 +29,7 @@ function MapScreen({ navigation }) {
   const [minRetweets, setMinRetweets] = React.useState(0);
   const [advanced, setAdvanced] = React.useState(false);
   const [query, setQuery] = React.useState("");
+  const [chosenType, setChosenType] = React.useState(null);
 
   const slideAnimation = useRef(new Animated.Value(width)).current;
   const opacityAnimation = useRef(new Animated.Value(0)).current;
@@ -192,6 +196,18 @@ function MapScreen({ navigation }) {
                     justifyContent: "center",
                     alignItems: "center",
                   }}
+                  onPress={() => {
+                    WebBrowser.openBrowserAsync(
+                      handleSearch(
+                        cords,
+                        radius,
+                        minLikes,
+                        minRetweets,
+                        query,
+                        chosenType
+                      )
+                    );
+                  }}
                 >
                   <Text
                     style={{ fontSize: 20, fontWeight: "bold", color: "white" }}
@@ -212,7 +228,7 @@ function MapScreen({ navigation }) {
                   }}
                   style={{ textDecorationLine: "underline" }}
                 >
-                  {advanced ? "Hide advanced options" : "Show advanced options"}
+                  {advanced ? "Hide" : "Show"} advanced options
                 </Text>
               </View>
               <View style={{ flex: 1 }}>
@@ -270,33 +286,15 @@ function MapScreen({ navigation }) {
                     <View style={{ flex: 1, alignItems: "center" }}>
                       <Text style={styles.advancedOptionsText}>MEDIA TYPE</Text>
                     </View>
-                    <View
-                      style={{
-                        height: 50,
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <View
-                        style={{
-                          borderColor: Colors.secondary,
-                          height: 25,
-                          width: 25,
-                          borderWidth: 2,
-                        }}
-                      ></View>
-                      <View
-                        style={{
-                          height: 50,
-                          width: 100,
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text>blblablaba</Text>
-                      </View>
-                    </View>
+                    {MediaType(0, "All tweets", chosenType, setChosenType)}
+                    {MediaType(
+                      1,
+                      "Images and videos",
+                      chosenType,
+                      setChosenType
+                    )}
+                    {MediaType(2, "Images", chosenType, setChosenType)}
+                    {MediaType(3, "Videos", chosenType, setChosenType)}
                   </ScrollView>
                 )}
               </View>
