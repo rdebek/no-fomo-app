@@ -63,4 +63,21 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     borderTopRightRadius: 25,
   },
+  textInput: {
+    // paddingHorizontal: 5,
+    margin: 5,
+    marginBottom: 15,
+    borderColor: Colors.primary,
+    borderWidth: 2,
+    backgroundColor: "white",
+    width: 200,
+    height: 50,
+    fontSize: 20,
+    color: "#101820FF",
+    borderRadius: 10,
+  },
+  advancedOptionsText: {
+    fontWeight: 'bold',
+    fontSize: 20,
+  }
 });

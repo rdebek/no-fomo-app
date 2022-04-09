@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { styles } from "../styles/RegisterScreenStyles";
 import { footer } from "../components/Footer";
@@ -38,6 +39,7 @@ function RegisterScreen({ navigation }) {
           selectionColor="black"
           style={styles.formInput}
           value={password}
+          secureTextEntry={true}
           onChangeText={setPassword}
         />
         <Text style={styles.textDescriptors}>Confirm password</Text>
@@ -48,6 +50,7 @@ function RegisterScreen({ navigation }) {
           selectionColor="black"
           style={styles.formInput}
           value={passwordConfirm}
+          secureTextEntry={true}
           onChangeText={setPasswordConfirm}
         />
 
@@ -62,11 +65,14 @@ function RegisterScreen({ navigation }) {
     </SafeAreaView>
   );
   function handleRegister() {
+    if (password == passwordConfirm) {
+      navigation.navigate("EmailScreen", { emailAddress: email });
+    } else Alert.alert("Passwords aren't the same.");
     console.log(
       `email: ${email}\n pass: ${password}\n pass_conf: ${passwordConfirm}`
     );
-    navigation.navigate("EmailScreen", { emailAddress: email });
   }
-}
+  }
+
 
 export default RegisterScreen;

@@ -1,16 +1,5 @@
 import * as React from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  Button,
-  TouchableOpacity,
-  Linking,
-  Image,
-  Switch,
-} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import WelcomeScreen from "./app/screens/WelcomeScreen";

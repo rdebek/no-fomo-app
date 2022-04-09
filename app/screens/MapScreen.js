@@ -9,6 +9,8 @@ import {
   Linking,
   SafeAreaView,
   Animated,
+  ScrollView,
+  TextInput,
 } from "react-native";
 import { width, height } from "../components/Utility";
 import { slideIn, slideOut } from "../components/Animations";
@@ -20,6 +22,10 @@ function MapScreen({ navigation }) {
   const [confirm, setConfirm] = React.useState(false);
   const [twitterChosen, setTwitterChosen] = React.useState(true);
   const [radius, setRadius] = React.useState(0);
+  const [minLikes, setMinLikes] = React.useState(0);
+  const [minRetweets, setMinRetweets] = React.useState(0);
+  const [advanced, setAdvanced] = React.useState(false);
+  const [query, setQuery] = React.useState("");
 
   const slideAnimation = useRef(new Animated.Value(width)).current;
   const opacityAnimation = useRef(new Animated.Value(0)).current;
@@ -151,29 +157,148 @@ function MapScreen({ navigation }) {
                 borderTopWidth: 2,
               }}
             >
+              <View style={{ flex: 1, alignItems: "center" }}>
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text style={{ fontWeight: "bold", fontSize: 30 }}>
+                    RADIUS
+                  </Text>
+                  <Slider
+                    style={{ width: 200, height: 40 }}
+                    minimumValue={0}
+                    maximumValue={30}
+                    step={1}
+                    minimumTrackTintColor="black"
+                    maximumTrackTintColor="red"
+                    onValueChange={setRadius}
+                  ></Slider>
+                  <Text style={{ fontWeight: "bold", fontSize: 30 }}>
+                    {radius}km
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={{
+                    height: 50,
+                    marginTop: -10,
+                    backgroundColor: Colors.primary,
+                    width: 150,
+                    borderRadius: 30,
+                    marginBottom: 10,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
+                    style={{ fontSize: 20, fontWeight: "bold", color: "white" }}
+                  >
+                    SEARCH
+                  </Text>
+                </TouchableOpacity>
+              </View>
               <View
                 style={{
-                  flex: 1,
                   alignItems: "center",
-                  justifyContent: "center",
+                  height: 25,
                 }}
               >
-                <Text style={{ fontWeight: "bold", fontSize: 30 }}>RADIUS</Text>
-                <Slider
-                  style={{ width: 200, height: 40 }}
-                  minimumValue={0}
-                  maximumValue={30}
-                  step={1}
-                  minimumTrackTintColor="black"
-                  maximumTrackTintColor="red"
-                  onValueChange={setRadius}
-                ></Slider>
-                <Text style={{ fontWeight: "bold", fontSize: 30 }}>
-                  {radius}km
+                <Text
+                  onPress={() => {
+                    setAdvanced(!advanced);
+                  }}
+                  style={{ textDecorationLine: "underline" }}
+                >
+                  {advanced ? "Hide advanced options" : "Show advanced options"}
                 </Text>
               </View>
               <View style={{ flex: 1 }}>
-                <Text>Advanced options placeholder</Text>
+                {advanced && (
+                  <ScrollView showsVerticalScrollIndicator={false}>
+                    <View style={{ flex: 1, alignItems: "center" }}>
+                      <Text style={styles.advancedOptionsText}>QUERY</Text>
+                      <TextInput
+                        textAlign="center"
+                        autoCapitalize="none"
+                        selectionColor="black"
+                        style={styles.textInput}
+                        onChangeText={setQuery}
+                      />
+
+                      <Text style={styles.advancedOptionsText}>MIN LIKES</Text>
+                      <Slider
+                        style={{ width: 200, height: 30 }}
+                        minimumValue={0}
+                        maximumValue={1000}
+                        step={1}
+                        minimumTrackTintColor="black"
+                        maximumTrackTintColor="#1DA1F2"
+                        onValueChange={setMinLikes}
+                      ></Slider>
+                      <Text
+                        style={[
+                          styles.advancedOptionsText,
+                          { marginBottom: 10 },
+                        ]}
+                      >
+                        {minLikes}
+                      </Text>
+                      <Text style={styles.advancedOptionsText}>
+                        MIN RETWEETS
+                      </Text>
+                      <Slider
+                        style={{ width: 200, height: 40 }}
+                        minimumValue={0}
+                        maximumValue={1000}
+                        step={1}
+                        minimumTrackTintColor="black"
+                        maximumTrackTintColor="#1DA1F2"
+                        onValueChange={setMinRetweets}
+                      ></Slider>
+                      <Text
+                        style={[
+                          styles.advancedOptionsText,
+                          { marginBottom: 10 },
+                        ]}
+                      >
+                        {minRetweets}
+                      </Text>
+                    </View>
+                    <View style={{ flex: 1, alignItems: "center" }}>
+                      <Text style={styles.advancedOptionsText}>MEDIA TYPE</Text>
+                    </View>
+                    <View
+                      style={{
+                        height: 50,
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <View
+                        style={{
+                          borderColor: Colors.secondary,
+                          height: 25,
+                          width: 25,
+                          borderWidth: 2,
+                        }}
+                      ></View>
+                      <View
+                        style={{
+                          height: 50,
+                          width: 100,
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text>blblablaba</Text>
+                      </View>
+                    </View>
+                  </ScrollView>
+                )}
               </View>
             </View>
           )}

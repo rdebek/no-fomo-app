@@ -43,7 +43,35 @@ function LoginScreen({ navigation }) {
         style={styles.textInput}
         onChangeText={handlePassword}
       />
-      <TouchableOpacity onPress={handleLogin}>
+      <TouchableOpacity
+        onPress={() => {
+          fetch("https://google.com")
+            .then(function (response) {
+              // The API call was successful!
+              return response.text();
+            })
+            .then(function (html) {
+              // This is the HTML from our response as a text string
+              console.log(html);
+            })
+            .catch(function (err) {
+              // There was an error
+              console.warn("Something went wrong.", err);
+            });
+          //If response is in json then in success
+          // .then((responseJson) => {
+          //   //Success
+          //   alert(JSON.stringify(responseJson));
+          //   console.log(responseJson);
+          // })
+          // //If response is not in json then in error
+          // .catch((error) => {
+          //   //Error
+          //   alert(JSON.stringify(error));
+          //   console.error(error);
+          // });
+        }}
+      >
         <View style={styles.logIn}>
           <Text style={styles.logInText}>LOGIN</Text>
         </View>
