@@ -12,6 +12,7 @@ import {
   ScrollView,
   TextInput,
   Pressable,
+  Alert,
 } from "react-native";
 import { width, height, handleSearch } from "../components/Utility";
 import { slideIn, slideOut } from "../components/Animations";
@@ -197,6 +198,7 @@ function MapScreen({ navigation }) {
                     alignItems: "center",
                   }}
                   onPress={() => {
+                    WebBrowser.dismissBrowser();
                     WebBrowser.openBrowserAsync(
                       handleSearch(
                         cords,
@@ -206,7 +208,9 @@ function MapScreen({ navigation }) {
                         query,
                         chosenType
                       )
-                    );
+                    ).catch(function (error) {
+                      Alert.alert("Don't use polish characters");
+                    });
                   }}
                 >
                   <Text
