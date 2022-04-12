@@ -313,7 +313,13 @@ function MapScreen({ navigation }) {
                 alignItems: "center",
                 justifyContent: "center",
               }}
-            ></View>
+            >
+              {/* {          post("https://no-fomo-backend.herokuapp.com/instagram", {
+            auth: "fcdfa1d2961404557b54eeada355ddfc57469792d290a557f81544b8587d6a21",
+            lat: "52.26513526756412",
+            long: "21.017817245626844",
+          });} */}
+            </View>
           )}
         </Animated.View>
       )}

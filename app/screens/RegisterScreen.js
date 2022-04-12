@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { styles } from "../styles/RegisterScreenStyles";
 import { footer } from "../components/Footer";
+import { post } from "../components/Api";
 
 function RegisterScreen({ navigation }) {
   const [email, setEmail] = React.useState("");
@@ -65,14 +66,26 @@ function RegisterScreen({ navigation }) {
     </SafeAreaView>
   );
   function handleRegister() {
-    if (password == passwordConfirm) {
-      navigation.navigate("EmailScreen", { emailAddress: email });
-    } else Alert.alert("Passwords aren't the same.");
+    if (password != passwordConfirm) {
+      return Alert.alert("Passwords aren't the same.");
+    }
+    if (!email) {
+      return Alert.alert("Please enter your email address.");
+    }
+
+    post("https://no-fomo-backend.herokuapp.com/register", {
+      auth: "fcdfa1d2961404557b54eeada355ddfc57469792d290a557f81544b8587d6a21",
+      email: email,
+      password: password,
+    });
+
+    // if register is successfull:
+    // navigation.navigate("EmailScreen", { emailAddress: email });
+    // send email with verification code
     console.log(
       `email: ${email}\n pass: ${password}\n pass_conf: ${passwordConfirm}`
     );
   }
-  }
-
+}
 
 export default RegisterScreen;

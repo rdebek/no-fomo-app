@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { styles } from "../styles/LoginScreenStyles";
+import { post } from "../components/Api";
 
 function LoginScreen({ navigation }) {
   const [login, setLogin] = React.useState("Login");
@@ -43,35 +44,7 @@ function LoginScreen({ navigation }) {
         style={styles.textInput}
         onChangeText={handlePassword}
       />
-      <TouchableOpacity
-        onPress={() => {
-          fetch("https://google.com")
-            .then(function (response) {
-              // The API call was successful!
-              return response.text();
-            })
-            .then(function (html) {
-              // This is the HTML from our response as a text string
-              console.log(html);
-            })
-            .catch(function (err) {
-              // There was an error
-              console.warn("Something went wrong.", err);
-            });
-          //If response is in json then in success
-          // .then((responseJson) => {
-          //   //Success
-          //   alert(JSON.stringify(responseJson));
-          //   console.log(responseJson);
-          // })
-          // //If response is not in json then in error
-          // .catch((error) => {
-          //   //Error
-          //   alert(JSON.stringify(error));
-          //   console.error(error);
-          // });
-        }}
-      >
+      <TouchableOpacity onPress={() => {console.log("logged in")}}>
         <View style={styles.logIn}>
           <Text style={styles.logInText}>LOGIN</Text>
         </View>
