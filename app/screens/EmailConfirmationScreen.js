@@ -10,6 +10,7 @@ import {
 import { styles } from "../styles/EmailConfirmationScreenStyles";
 import { footer } from "../components/Footer";
 import { Colors } from "../styles/Colors";
+import { post } from "../components/Api";
 
 function EmailConfirmationScreen({ route, navigation }) {
   const [confimationCode, setConfirmationCode] = React.useState("");
@@ -42,7 +43,7 @@ function EmailConfirmationScreen({ route, navigation }) {
         />
         <TouchableOpacity
           style={{ alignItems: "center" }}
-          onPress={() => navigation.navigate("MenuScreen")}
+          onPress={verifyEmail}
         >
           <View style={styles.verify}>
             <Text style={styles.verifyText}>VERIFY</Text>
@@ -56,15 +57,14 @@ function EmailConfirmationScreen({ route, navigation }) {
         </Text>
         <TouchableOpacity
           disabled={resendCode}
-          onPress={() => {
-            Alert.alert("Confimation code resent.");
-            setResendCode(true);
-          }}
+          onPress={resendConfirmationEmail}
         >
           <View
             style={[
               styles.resend,
-              { backgroundColor: resendCode ? Colors.disabled : Colors.primary },
+              {
+                backgroundColor: resendCode ? Colors.disabled : Colors.primary,
+              },
             ]}
           >
             <Text style={styles.resendText}>RESEND</Text>
@@ -73,6 +73,33 @@ function EmailConfirmationScreen({ route, navigation }) {
       </View>
     </SafeAreaView>
   );
+
+  async function verifyEmail() {
+    let res = await post("https://no-fomo-backend.herokuapp.com/email", {
+      auth: "fcdfa1d2961404557b54eeada355ddfc57469792d290a557f81544b8587d6a21",
+      email: emailAddress,
+      token: confimationCode,
+    });
+
+    res = await res.json();
+
+    console.log(res);
+
+    if (res.verify) {
+      navigation.navigate("MenuScreen");
+    } else {
+      Alert.alert("Verification code is inavild.");
+    }
+  }
+
+  async function resendConfirmationEmail() {
+    post("https://no-fomo-backend.herokuapp.com/email", {
+      auth: "fcdfa1d2961404557b54eeada355ddfc57469792d290a557f81544b8587d6a21",
+      email: emailAddress,
+    });
+    Alert.alert("Confimation code resent.");
+    setResendCode(true);
+  }
 }
 
 export default EmailConfirmationScreen;

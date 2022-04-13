@@ -1,4 +1,4 @@
-export const post = (url, data) => {
+export const post = async (url, data) => {
   var formBody = [];
   for (var key in data) {
     var encodedKey = encodeURIComponent(key);
@@ -6,19 +6,11 @@ export const post = (url, data) => {
     formBody.push(encodedKey + "=" + encodedValue);
   }
   formBody = formBody.join("&");
-  fetch(url, {
+  return await fetch(url, {
     method: "POST",
     body: formBody,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
     },
-  })
-    .then((response) => response.json())
-    .then((responseJson) => {
-      console.log(responseJson);
-      return responseJson;
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  });
 };

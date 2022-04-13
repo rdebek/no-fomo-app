@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
 import { styles } from "../styles/MenuScreenStyles";
 import { footer } from "../components/Footer";
+import { removeFromStorage } from "../components/SecureStore";
 
 function MenuScreen({ navigation }) {
   return (
@@ -19,7 +20,11 @@ function MenuScreen({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.menuOptionView}
-          onPress={() => navigation.navigate("LoginScreen")}
+          onPress={() => {
+            removeFromStorage("login");
+            removeFromStorage("password");
+            navigation.navigate("LoginScreen");
+          }}
         >
           <Text style={styles.menuOptionText}>Logout</Text>
         </TouchableOpacity>

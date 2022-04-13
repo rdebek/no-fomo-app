@@ -11,6 +11,7 @@ import {
 import { styles } from "../styles/RegisterScreenStyles";
 import { footer } from "../components/Footer";
 import { post } from "../components/Api";
+import { save } from "../components/SecureStore";
 
 function RegisterScreen({ navigation }) {
   const [email, setEmail] = React.useState("");
@@ -65,7 +66,7 @@ function RegisterScreen({ navigation }) {
       </View>
     </SafeAreaView>
   );
-  function handleRegister() {
+  async function handleRegister() {
     if (password != passwordConfirm) {
       return Alert.alert("Passwords aren't the same.");
     }
@@ -73,18 +74,26 @@ function RegisterScreen({ navigation }) {
       return Alert.alert("Please enter your email address.");
     }
 
-    post("https://no-fomo-backend.herokuapp.com/register", {
+    let res = await post("https://no-fomo-backend.herokuapp.com/register", {
       auth: "fcdfa1d2961404557b54eeada355ddfc57469792d290a557f81544b8587d6a21",
       email: email,
       password: password,
     });
+    res = await res.json();
 
-    // if register is successfull:
-    // navigation.navigate("EmailScreen", { emailAddress: email });
-    // send email with verification code
-    console.log(
-      `email: ${email}\n pass: ${password}\n pass_conf: ${passwordConfirm}`
-    );
+    if (res.error) {
+      return Alert.alert(res.msg);
+    }
+
+    post("https://no-fomo-backend.herokuapp.com/email", {
+      auth: "fcdfa1d2961404557b54eeada355ddfc57469792d290a557f81544b8587d6a21",
+      email: email,
+    });
+
+    save("login", email);
+    save("password", password);
+
+    navigation.navigate("EmailScreen", { emailAddress: email });
   }
 }
 
