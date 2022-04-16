@@ -24,9 +24,7 @@ function EmailConfirmationScreen({ route, navigation }) {
         <Text style={styles.textInfo}>
           In order to confirm your email, please head over to your inbox at:
           {"\n\n"}
-          <Text style={{ fontWeight: "bold", textAlign: "center" }}>
-            {emailAddress}
-          </Text>
+          <Text style={styles.boldTextCenter}>{emailAddress}</Text>
         </Text>
       </View>
       <View style={styles.containerJustify}>

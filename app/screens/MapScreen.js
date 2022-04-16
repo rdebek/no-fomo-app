@@ -7,12 +7,11 @@ import {
   Image,
   TouchableOpacity,
   Linking,
-  SafeAreaView,
   Animated,
   ScrollView,
   TextInput,
-  Pressable,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { width, height, handleSearch } from "../components/Utility";
 import { slideIn, slideOut } from "../components/Animations";
@@ -36,6 +35,7 @@ function MapScreen({ navigation }) {
   const [placesArray, setPlacesArray] = React.useState([]);
   const [instaMarkersVisible, setInstaMarkersVisible] = React.useState(false);
   const [mapRef, setMapRef] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const slideAnimation = useRef(new Animated.Value(width)).current;
   const opacityAnimation = useRef(new Animated.Value(0)).current;
@@ -50,7 +50,7 @@ function MapScreen({ navigation }) {
         ref={(ref) => setMapRef(ref)}
         showsUserLocation={true}
         userInterfaceStyle={getMode() ? "dark" : "light"}
-        style={styles.map}
+        style={styles.container}
         onPress={(e) => {
           if (instaMarkersVisible) {
             return 0;
@@ -68,36 +68,13 @@ function MapScreen({ navigation }) {
               coordinate={{ latitude: place.lat, longitude: place.lng }}
             >
               <Callout style={{ width: 120 }}>
-                <View
-                  style={{
-                    flex: 1,
-                    alignItems: "center",
-                  }}
-                >
-                  <View
-                    style={{
-                      flex: 1,
-                      marginBottom: 10,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        fontWeight: "bold",
-                        fontSize: 15,
-                      }}
-                    >
-                      {place.name}
-                    </Text>
+                <View style={styles.containerAlignCenter}>
+                  <View style={[styles.container, { marginBottom: 10 }]}>
+                    <Text style={styles.markerText}>{place.name}</Text>
                   </View>
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "row",
-                    }}
-                  >
+                  <View style={[styles.container, { flexDirection: "row" }]}>
                     <TouchableOpacity
-                      style={{ flex: 1, marginRight: 17 }}
+                      style={[styles.container, { marginRight: 17 }]}
                       onPress={() => {
                         Linking.openURL(
                           `https://www.instagram.com/explore/locations/${place.external_id}/`
@@ -106,26 +83,18 @@ function MapScreen({ navigation }) {
                     >
                       <Image
                         source={require("../assets/instagram_logo.png")}
-                        style={{
-                          width: 50,
-                          height: 50,
-                        }}
+                        style={styles.markerLogo}
                       />
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={{ flex: 1 }}
+                      style={styles.container}
                       onPress={() => {
-                        Linking.openURL(
-                          `https://www.facebook.com/pages/${place.name}/${place.external_id}/`
-                        );
+                        Linking.openURL(`fb://profile/${place.external_id}`);
                       }}
                     >
                       <Image
                         source={require("../assets/fb_logo.png")}
-                        style={{
-                          width: 50,
-                          height: 50,
-                        }}
+                        style={styles.markerLogo}
                       />
                     </TouchableOpacity>
                   </View>
@@ -195,7 +164,7 @@ function MapScreen({ navigation }) {
               onPress={() => setTwitterChosen(true)}
             >
               <Image
-                style={{ width: 50, height: 41.125 }}
+                style={styles.twitterLogo}
                 source={require("../assets/twitter_logo.webp")}
               />
             </TouchableOpacity>
@@ -207,53 +176,29 @@ function MapScreen({ navigation }) {
               onPress={() => setTwitterChosen(false)}
             >
               <Image
-                style={{ width: 45, height: 45 }}
+                style={styles.instagramLogo}
                 source={require("../assets/instagram_logo.png")}
               />
             </TouchableOpacity>
           </View>
           {twitterChosen && (
-            <View
-              style={{
-                flex: 1,
-                borderTopWidth: 2,
-              }}
-            >
-              <View style={{ flex: 1, alignItems: "center" }}>
-                <View
-                  style={{
-                    flex: 1,
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Text style={{ fontWeight: "bold", fontSize: 30 }}>
-                    RADIUS
-                  </Text>
+            <View style={styles.borderTopView}>
+              <View style={styles.containerAlignCenter}>
+                <View style={styles.centerView}>
+                  <Text style={styles.sliderText}>RADIUS</Text>
                   <Slider
-                    style={{ width: 200, height: 40 }}
+                    style={styles.slider}
                     minimumValue={0}
                     maximumValue={30}
                     step={1}
                     minimumTrackTintColor="black"
-                    maximumTrackTintColor="red"
+                    maximumTrackTintColor={Colors.twitterColor}
                     onValueChange={setRadius}
                   ></Slider>
-                  <Text style={{ fontWeight: "bold", fontSize: 30 }}>
-                    {radius}km
-                  </Text>
+                  <Text style={styles.sliderText}>{radius}km</Text>
                 </View>
                 <TouchableOpacity
-                  style={{
-                    height: 50,
-                    marginTop: -10,
-                    backgroundColor: Colors.primary,
-                    width: 150,
-                    borderRadius: 30,
-                    marginBottom: 10,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
+                  style={styles.twitterSearchButton}
                   onPress={() => {
                     WebBrowser.dismissBrowser();
                     WebBrowser.openBrowserAsync(
@@ -268,21 +213,13 @@ function MapScreen({ navigation }) {
                     ).catch(function (error) {
                       Alert.alert("Don't use polish characters");
                     });
+                    setChosenType(null);
                   }}
                 >
-                  <Text
-                    style={{ fontSize: 20, fontWeight: "bold", color: "white" }}
-                  >
-                    SEARCH
-                  </Text>
+                  <Text style={styles.twitterSearchText}>SEARCH</Text>
                 </TouchableOpacity>
               </View>
-              <View
-                style={{
-                  alignItems: "center",
-                  height: 25,
-                }}
-              >
+              <View style={styles.advancedOptionsView}>
                 <Text
                   onPress={() => {
                     setAdvanced(!advanced);
@@ -292,10 +229,10 @@ function MapScreen({ navigation }) {
                   {advanced ? "Hide" : "Show"} advanced options
                 </Text>
               </View>
-              <View style={{ flex: 1 }}>
+              <View style={styles.container}>
                 {advanced && (
                   <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={{ flex: 1, alignItems: "center" }}>
+                    <View style={styles.containerAlignCenter}>
                       <Text style={styles.advancedOptionsText}>QUERY</Text>
                       <TextInput
                         textAlign="center"
@@ -307,7 +244,7 @@ function MapScreen({ navigation }) {
 
                       <Text style={styles.advancedOptionsText}>MIN LIKES</Text>
                       <Slider
-                        style={{ width: 200, height: 30 }}
+                        style={styles.slider}
                         minimumValue={0}
                         maximumValue={1000}
                         step={1}
@@ -327,7 +264,7 @@ function MapScreen({ navigation }) {
                         MIN RETWEETS
                       </Text>
                       <Slider
-                        style={{ width: 200, height: 40 }}
+                        style={styles.slider}
                         minimumValue={0}
                         maximumValue={1000}
                         step={1}
@@ -344,7 +281,7 @@ function MapScreen({ navigation }) {
                         {minRetweets}
                       </Text>
                     </View>
-                    <View style={{ flex: 1, alignItems: "center" }}>
+                    <View style={styles.containerAlignCenter}>
                       <Text style={styles.advancedOptionsText}>MEDIA TYPE</Text>
                     </View>
                     {MediaType(0, "All tweets", chosenType, setChosenType)}
@@ -363,37 +300,37 @@ function MapScreen({ navigation }) {
           )}
 
           {!twitterChosen && (
-            <View
-              style={{
-                flex: 1,
-                borderTopWidth: 2,
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <TouchableOpacity onPress={handleInstagram}>
-                  <LinearGradient
-                    colors={[
-                      "#4162F0",
-                      "#544CED",
-                      "#8F39CE",
-                      "#D53692",
-                      "#F5326E",
-                      "#F74440",
-                      "#EE693E",
-                      "#FCBB45",
-                      "#EFD88A",
-                    ]}
-                    style={styles.instagramButton}
-                  >
-                    <Text style={styles.instagramSearchText}>SEARCH</Text>
-                  </LinearGradient>
-                </TouchableOpacity>
+            <View style={styles.borderTopView}>
+              <View style={styles.container}>
+                <View style={styles.centerView}>
+                  <Text style={styles.instagramHeader}>INSTAGRAM SEARCH</Text>
+                </View>
+                <ActivityIndicator
+                  size="large"
+                  color={"purple"}
+                  style={{ marginBottom: 10 }}
+                  animating={loading}
+                />
+                <View style={styles.containerAlignCenter}>
+                  <TouchableOpacity onPress={handleInstagram}>
+                    <LinearGradient
+                      colors={[
+                        "#4162F0",
+                        "#544CED",
+                        "#8F39CE",
+                        "#D53692",
+                        "#F5326E",
+                        "#F74440",
+                        "#EE693E",
+                        "#FCBB45",
+                        "#EFD88A",
+                      ]}
+                      style={styles.instagramButton}
+                    >
+                      <Text style={styles.instagramSearchText}>SEARCH</Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           )}
@@ -403,6 +340,7 @@ function MapScreen({ navigation }) {
   );
 
   async function handleInstagram() {
+    setLoading(true);
     let res = await post("https://no-fomo-backend.herokuapp.com/instagram", {
       auth: "fcdfa1d2961404557b54eeada355ddfc57469792d290a557f81544b8587d6a21",
       lat: cords.latitude,
@@ -423,6 +361,7 @@ function MapScreen({ navigation }) {
       1000
     );
     setCords(false);
+    setLoading(false);
   }
 }
 

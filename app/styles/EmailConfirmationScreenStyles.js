@@ -63,4 +63,8 @@ export const styles = StyleSheet.create({
     marginTop: 10,
   },
   resendText: { fontSize: 20, color: "white" },
+  boldTextCenter: {
+    fontWeight: "bold",
+    textAlign: "center",
+  },
 });

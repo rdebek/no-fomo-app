@@ -6,9 +6,6 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  map: {
-    flex: 1,
-  },
   confirmButton: {
     width: 100,
     height: 45,
@@ -80,16 +77,78 @@ export const styles = StyleSheet.create({
     fontSize: 20,
   },
   instagramButton: {
-    width: 150,
-    height: 50,
+    width: 200,
+    height: 60,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 25,
+    borderRadius: 30,
     borderWidth: 2,
   },
   instagramSearchText: {
     fontWeight: "bold",
+    fontSize: 25,
+    textShadowColor: "white",
+    textShadowRadius: 1,
+  },
+  centerView: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  twitterSearchButton: {
+    height: 50,
+    marginTop: -10,
+    backgroundColor: Colors.primary,
+    width: 150,
+    borderRadius: 30,
+    marginBottom: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  twitterSearchText: {
     fontSize: 20,
-    // color: "white",
+    fontWeight: "bold",
+    color: "white",
+  },
+  advancedOptionsView: {
+    alignItems: "center",
+    height: 25,
+  },
+  borderTopView: {
+    flex: 1,
+    borderTopWidth: 2,
+  },
+  containerAlignCenter: {
+    flex: 1,
+    alignItems: "center",
+  },
+  markerText: {
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 15,
+  },
+  markerLogo: {
+    width: 50,
+    height: 50,
+  },
+  twitterLogo: {
+    width: 50,
+    height: 41.125,
+  },
+  instagramLogo: {
+    width: 45,
+    height: 45,
+  },
+  sliderText: {
+    fontWeight: "bold",
+    fontSize: 30,
+  },
+  slider: {
+    width: 200,
+    height: 40,
+  },
+  instagramHeader: {
+    fontWeight: "bold",
+    fontSize: 25,
   },
 });

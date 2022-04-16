@@ -37,7 +37,9 @@ export const MediaType = (index, text, chosenType, setChosenType) => (
       onPress={() => setChosenType(index)}
     />
     <View style={styles.textView}>
-      <Text style={styles.textStyle}>{text}</Text>
+      <Text style={styles.textStyle} onPress={() => setChosenType(index)}>
+        {text}
+      </Text>
     </View>
   </View>
 );
