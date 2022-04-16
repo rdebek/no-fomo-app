@@ -76,7 +76,20 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
   },
   advancedOptionsText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 20,
-  }
+  },
+  instagramButton: {
+    width: 150,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 25,
+    borderWidth: 2,
+  },
+  instagramSearchText: {
+    fontWeight: "bold",
+    fontSize: 20,
+    // color: "white",
+  },
 });

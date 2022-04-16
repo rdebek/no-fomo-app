@@ -6,10 +6,10 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { styles } from "../styles/LoginScreenStyles";
 import { post } from "../components/Api";
-import { Alert } from "react-native-web";
 import { save, getValueFor } from "../components/SecureStore";
 
 function LoginScreen({ navigation }) {

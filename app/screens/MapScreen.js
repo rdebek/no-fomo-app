@@ -20,6 +20,8 @@ import Slider from "@react-native-community/slider";
 import { Colors } from "../styles/Colors";
 import { MediaType } from "../components/MediaType";
 import * as WebBrowser from "expo-web-browser";
+import { LinearGradient } from "expo-linear-gradient";
+import { post } from "../components/Api";
 
 function MapScreen({ navigation }) {
   const [cords, setCords] = React.useState(null);
@@ -31,6 +33,9 @@ function MapScreen({ navigation }) {
   const [advanced, setAdvanced] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [chosenType, setChosenType] = React.useState(null);
+  const [placesArray, setPlacesArray] = React.useState([]);
+  const [instaMarkersVisible, setInstaMarkersVisible] = React.useState(false);
+  const [mapRef, setMapRef] = React.useState(false);
 
   const slideAnimation = useRef(new Animated.Value(width)).current;
   const opacityAnimation = useRef(new Animated.Value(0)).current;
@@ -42,60 +47,100 @@ function MapScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <MapView
+        ref={(ref) => setMapRef(ref)}
         showsUserLocation={true}
         userInterfaceStyle={getMode() ? "dark" : "light"}
         style={styles.map}
         onPress={(e) => {
-          if (!confirm) setCords(e.nativeEvent.coordinate);
+          if (instaMarkersVisible) {
+            return 0;
+          } else if (!confirm) setCords(e.nativeEvent.coordinate);
           else {
             slideOut(slideAnimation, opacityAnimation);
             setTimeout(() => setConfirm(false), 1500);
           }
         }}
       >
+        {placesArray &&
+          placesArray.map((place, index) => (
+            <Marker
+              key={index}
+              coordinate={{ latitude: place.lat, longitude: place.lng }}
+            >
+              <Callout style={{ width: 120 }}>
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: "center",
+                  }}
+                >
+                  <View
+                    style={{
+                      flex: 1,
+                      marginBottom: 10,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        fontSize: 15,
+                      }}
+                    >
+                      {place.name}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                    }}
+                  >
+                    <TouchableOpacity
+                      style={{ flex: 1, marginRight: 17 }}
+                      onPress={() => {
+                        Linking.openURL(
+                          `https://www.instagram.com/explore/locations/${place.external_id}/`
+                        );
+                      }}
+                    >
+                      <Image
+                        source={require("../assets/instagram_logo.png")}
+                        style={{
+                          width: 50,
+                          height: 50,
+                        }}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{ flex: 1 }}
+                      onPress={() => {
+                        Linking.openURL(
+                          `https://www.facebook.com/pages/${place.name}/${place.external_id}/`
+                        );
+                      }}
+                    >
+                      <Image
+                        source={require("../assets/fb_logo.png")}
+                        style={{
+                          width: 50,
+                          height: 50,
+                        }}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Callout>
+            </Marker>
+          ))}
         {cords && (
           <Marker
             coordinate={{
               latitude: cords.latitude,
               longitude: cords.longitude,
             }}
-            title="nice"
-            onPress={() =>
-              Linking.openURL(
-                "https://twitter.com/search?q=%20geocode%3A25.767578743134663%2C-80.16185911319963%2C25km&src=typed_query&f=live"
-              )
-            }
           />
         )}
-        <Marker
-          coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
-          title="hello"
-          description="piewszy marker"
-          pinColor="purple"
-        >
-          <Callout>
-            <Text
-              on
-              onPress={() =>
-                Linking.openURL(
-                  "https://twitter.com/search?q=%20geocode%3A25.767578743134663%2C-80.16185911319963%2C25km&src=typed_query&f=live"
-                )
-              }
-            >
-              go to google
-            </Text>
-            <Image
-              source={{
-                uri: "https://picsum.photos/100",
-                width: 100,
-                height: 100,
-              }}
-              style={{
-                alignSelf: "center",
-              }}
-            />
-          </Callout>
-        </Marker>
       </MapView>
       <TouchableOpacity
         style={styles.backButton}
@@ -117,6 +162,18 @@ function MapScreen({ navigation }) {
           style={styles.confirmButton}
         >
           <Text style={styles.confirmText}>CONFIRM</Text>
+        </TouchableOpacity>
+      )}
+      {instaMarkersVisible && (
+        <TouchableOpacity
+          onPress={() => {
+            setInstaMarkersVisible(false);
+            setPlacesArray(false);
+            setConfirm(false);
+          }}
+          style={styles.confirmButton}
+        >
+          <Text style={styles.confirmText}>CLEAR MAP</Text>
         </TouchableOpacity>
       )}
       {confirm && (
@@ -310,21 +367,63 @@ function MapScreen({ navigation }) {
               style={{
                 flex: 1,
                 borderTopWidth: 2,
-                alignItems: "center",
-                justifyContent: "center",
               }}
             >
-              {/* {          post("https://no-fomo-backend.herokuapp.com/instagram", {
-            auth: "fcdfa1d2961404557b54eeada355ddfc57469792d290a557f81544b8587d6a21",
-            lat: "52.26513526756412",
-            long: "21.017817245626844",
-          });} */}
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <TouchableOpacity onPress={handleInstagram}>
+                  <LinearGradient
+                    colors={[
+                      "#4162F0",
+                      "#544CED",
+                      "#8F39CE",
+                      "#D53692",
+                      "#F5326E",
+                      "#F74440",
+                      "#EE693E",
+                      "#FCBB45",
+                      "#EFD88A",
+                    ]}
+                    style={styles.instagramButton}
+                  >
+                    <Text style={styles.instagramSearchText}>SEARCH</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
         </Animated.View>
       )}
     </View>
   );
+
+  async function handleInstagram() {
+    let res = await post("https://no-fomo-backend.herokuapp.com/instagram", {
+      auth: "fcdfa1d2961404557b54eeada355ddfc57469792d290a557f81544b8587d6a21",
+      lat: cords.latitude,
+      long: cords.longitude,
+    });
+    res = await res.json();
+    setPlacesArray(res.venues);
+    setConfirm(true);
+    slideOut(slideAnimation, opacityAnimation);
+    setInstaMarkersVisible(true);
+    mapRef.animateToRegion(
+      {
+        latitude: cords.latitude,
+        longitude: cords.longitude,
+        latitudeDelta: 0.5,
+        longitudeDelta: 0.5,
+      },
+      1000
+    );
+    setCords(false);
+  }
 }
 
 export default MapScreen;
