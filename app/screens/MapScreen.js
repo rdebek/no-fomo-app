@@ -13,7 +13,7 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
-import { width, height, handleSearch } from "../components/Utility";
+import { width, height } from "../components/Utility";
 import { slideIn, slideOut } from "../components/Animations";
 import Slider from "@react-native-community/slider";
 import { Colors } from "../styles/Colors";
@@ -21,6 +21,7 @@ import { MediaType } from "../components/MediaType";
 import * as WebBrowser from "expo-web-browser";
 import { LinearGradient } from "expo-linear-gradient";
 import { post } from "../components/Api";
+import { handleSearch } from "../components/Twitter";
 
 function MapScreen({ navigation }) {
   const [cords, setCords] = React.useState(null);
@@ -124,7 +125,6 @@ function MapScreen({ navigation }) {
       {cords && !confirm && (
         <TouchableOpacity
           onPress={() => {
-            console.log("klik");
             setConfirm(true);
             slideIn(slideAnimation, opacityAnimation);
           }}
