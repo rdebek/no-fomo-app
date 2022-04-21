@@ -53,6 +53,36 @@ export async function getTrends(woeid) {
     woeid: woeid,
   });
   res = await res.json();
-  await res.map((trend) => {helper.push({name: trend.name, tweet_volume: trend.tweet_volume})})
-  return helper
+  await res.map((trend) => {
+    helper.push({ name: trend.name, tweet_volume: trend.tweet_volume });
+  });
+  return helper;
 }
+
+async function getCounts(query) {
+  let helper = [];
+  let res = await post("https://no-fomo-backend.herokuapp.com/twitter", {
+    auth: "fcdfa1d2961404557b54eeada355ddfc57469792d290a557f81544b8587d6a21",
+    mode: "counts",
+    query: query,
+    granularity: "hour",
+  });
+  res = await res.json();
+  await res.data.map((dataPoint) => {
+    helper.push(dataPoint.tweet_count);
+  });
+  return helper;
+}
+
+export const formatData = async (query) => {
+  let helper = [];
+  let data = await getCounts(query);
+  data.map((tweet_count) => {
+    helper.push({
+      value: tweet_count,
+      hideDataPoint: true,
+      hideYAxisText: true,
+    });
+  });
+  return helper;
+};

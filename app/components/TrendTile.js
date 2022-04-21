@@ -3,6 +3,8 @@ import React from "react";
 import { Colors, pastelColors } from "../styles/Colors";
 import AnimateNumber from "react-native-animate-number";
 
+import { LineChart } from "react-native-gifted-charts";
+
 const styles = StyleSheet.create({
   container: {
     height: 100,
@@ -11,6 +13,7 @@ const styles = StyleSheet.create({
   },
   plotView: {
     flex: 1,
+    marginTop: 10,
   },
   trendNameView: {
     flex: 1,
@@ -35,14 +38,33 @@ const styles = StyleSheet.create({
   },
 });
 
-export const TrendTile = (trend, i) => (
+export const TrendTile = (trend, i, data) => (
   <View
     style={[styles.container, { backgroundColor: pastelColors[i % 4] }]}
     key={i}
   >
-    <View style={styles.plotView}></View>
+    <View style={styles.plotView}>
+      <LineChart
+        data={data}
+        width={75}
+        height={75}
+        adjustToWidth={true}
+        hideRules={true}
+        yAxisTextStyle={{ fontSize: 9, color: "white" }}
+        thickness={2}
+        color={"white"}
+        xAxisColor={"white"}
+        yAxisColor={"white"}
+        initialSpacing={0}
+        noOfSections={4}
+        hideOrigin={true}
+      />
+    </View>
+
     <View style={styles.trendNameView}>
-      <Text style={styles.trendNameText}>{trend.name}</Text>
+      <Text style={styles.trendNameText} onPress={() => console.log(data)}>
+        {trend.name}
+      </Text>
     </View>
     <View style={styles.tweetVolumeView}>
       <Text style={styles.tweetVolumeText}>
