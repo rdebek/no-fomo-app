@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const footer = (
+export const Footer = (
   <View style={styles.logoView}>
     <Text style={styles.appName}>NO FOMO</Text>
     <Image style={styles.logo} source={require("../assets/app_logo.jpg")} />

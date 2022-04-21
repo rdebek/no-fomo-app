@@ -1,13 +1,13 @@
 import React from "react";
 import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
 import { styles } from "../styles/MenuScreenStyles";
-import { footer } from "../components/Footer";
+import { Footer } from "../components/Footer";
 import { removeFromStorage } from "../components/SecureStore";
 
 function MenuScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
-      {footer}
+      {Footer}
       <View style={styles.optionsContainer}>
         <TouchableOpacity
           style={styles.menuOptionView}

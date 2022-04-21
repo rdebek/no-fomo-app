@@ -1,3 +1,5 @@
+import { post } from "./Api";
+
 const parseFilter = (filterIndex) => {
   if (!filterIndex || filterIndex == 0) {
     return "";
@@ -28,3 +30,29 @@ export const handleSearch = (
   }%2C${radius}km%20${filter}%20min_faves%3A${minLikes}%20min_retweets%3A${minRetweets}&src=typed_query&f=live`;
   return baseString;
 };
+
+export async function getPlaces() {
+  let helper_arr = [];
+  let res = await post("https://no-fomo-backend.herokuapp.com/twitter", {
+    auth: "fcdfa1d2961404557b54eeada355ddfc57469792d290a557f81544b8587d6a21",
+    mode: "places",
+  });
+  res = await res.json();
+
+  await res.map((place) => {
+    helper_arr.push({ name: place.name, woeid: place.woeid });
+  });
+  return helper_arr;
+}
+
+export async function getTrends(woeid) {
+  let helper = [];
+  let res = await post("https://no-fomo-backend.herokuapp.com/twitter", {
+    auth: "fcdfa1d2961404557b54eeada355ddfc57469792d290a557f81544b8587d6a21",
+    mode: "trends",
+    woeid: woeid,
+  });
+  res = await res.json();
+  await res.map((trend) => {helper.push({name: trend.name, tweet_volume: trend.tweet_volume})})
+  return helper
+}

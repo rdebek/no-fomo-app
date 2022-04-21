@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   textView: {
-    height: 20,
+    height: 50,
     width: 200,
     justifyContent: "center",
     alignItems: "center",
@@ -36,10 +36,8 @@ export const MediaType = (index, text, chosenType, setChosenType) => (
       ]}
       onPress={() => setChosenType(index)}
     />
-    <View style={styles.textView}>
-      <Text style={styles.textStyle} onPress={() => setChosenType(index)}>
-        {text}
-      </Text>
-    </View>
+    <Pressable style={styles.textView} onPress={() => setChosenType(index)}>
+      <Text style={styles.textStyle}>{text}</Text>
+    </Pressable>
   </View>
 );

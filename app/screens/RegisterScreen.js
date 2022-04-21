@@ -9,7 +9,7 @@ import {
   Alert,
 } from "react-native";
 import { styles } from "../styles/RegisterScreenStyles";
-import { footer } from "../components/Footer";
+import { Footer } from "../components/Footer";
 import { post } from "../components/Api";
 import { save } from "../components/SecureStore";
 
@@ -20,7 +20,7 @@ function RegisterScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {footer}
+      {Footer}
       <View style={styles.containerJustify}>
         <Text style={styles.textDescriptors}>E-mail address</Text>
         <TextInput

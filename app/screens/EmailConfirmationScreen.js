@@ -8,7 +8,7 @@ import {
   Alert,
 } from "react-native";
 import { styles } from "../styles/EmailConfirmationScreenStyles";
-import { footer } from "../components/Footer";
+import { Footer } from "../components/Footer";
 import { Colors } from "../styles/Colors";
 import { post } from "../components/Api";
 
@@ -19,7 +19,7 @@ function EmailConfirmationScreen({ route, navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {footer}
+      {Footer}
       <View style={styles.infoContainer}>
         <Text style={styles.textInfo}>
           In order to confirm your email, please head over to your inbox at:
