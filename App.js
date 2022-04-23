@@ -7,7 +7,7 @@ import RegisterScreen from "./app/screens/RegisterScreen";
 import EmailConfirmationScreen from "./app/screens/EmailConfirmationScreen";
 import MenuScreen from "./app/screens/MenuScreen";
 import MapScreen from "./app/screens/MapScreen";
-import FollowedAreasScreen from "./app/screens/FollowedAreasScreen";
+import Places from "./app/screens/Places";
 
 const stack = createNativeStackNavigator();
 
@@ -18,12 +18,16 @@ export default function App() {
       <stack.Navigator screenOptions={{ headerShown: false }}>
         <stack.Screen name="LoginScreen" component={LoginScreen} />
         <stack.Screen name="MapScreen" component={MapScreen} />
-        <stack.Screen name="EmailScreen" component={EmailConfirmationScreen} />
+        <stack.Screen
+          name="EmailScreen"
+          component={EmailConfirmationScreen}
+          options={{ gestureEnabled: false }}
+        />
         <stack.Screen name="RegisterScreen" component={RegisterScreen} />
         <stack.Screen name="MenuScreen" component={MenuScreen} />
         <stack.Screen
-          name="FollowedAreasScreen"
-          component={FollowedAreasScreen}
+          name="Places"
+          component={Places}
         />
       </stack.Navigator>
     </NavigationContainer>

@@ -11,13 +11,15 @@ import { Picker } from "@react-native-picker/picker";
 import { getPlaces, getTrends } from "../components/Twitter";
 import { TrendTile } from "../components/TrendTile";
 import { formatData } from "../components/Twitter";
+import { Navbar } from "../components/Navbar";
 
-function FollowedAreasScreen({ navigation }) {
+function Places({ navigation }) {
   const [selectedPlace, setSelectedPlace] = React.useState();
   const [availablePlaces, setAvailablePlaces] = React.useState([]);
   const [trends, setTrends] = React.useState();
   const [helper, sethelper] = React.useState();
   const [loading, setLoading] = React.useState(false);
+  const [allAreasChosen, setAllAreasChosen] = React.useState(true);
 
   let data_array_of_arrays = [];
 
@@ -42,11 +44,15 @@ function FollowedAreasScreen({ navigation }) {
           alignItems: "center",
           flexDirection: "row",
           justifyContent: "center",
+          borderBottomWidth: 2,
         }}
       >
         <Picker
           selectedValue={selectedPlace}
           onValueChange={async (itemValue, itemIndex) => {
+            if (itemValue == selectedPlace) {
+              return;
+            }
             setLoading(true);
             setSelectedPlace(itemValue);
             let currentTrends = await getTrends(itemValue);
@@ -62,7 +68,7 @@ function FollowedAreasScreen({ navigation }) {
             fontSize: 25,
             fontWeight: "bold",
             marginLeft: 20,
-            color: "purple",
+            // color: "purple",
           }}
         >
           {availablePlaces.map((place, i) => (
@@ -71,19 +77,17 @@ function FollowedAreasScreen({ navigation }) {
         </Picker>
         <ActivityIndicator
           size="large"
-          color={"purple"}
+          color={"black"}
           style={{ marginRight: 25 }}
           animating={loading}
         />
       </View>
-      <ScrollView contentContainerStyle={{ borderTopWidth: 2 }}>
+      <ScrollView>
         {trends &&
           helper &&
           trends.map((trend, i) => TrendTile(trend, i, helper[i]))}
       </ScrollView>
-      <View>
-        <Text>navbar placeholder</Text>
-      </View>
+      {/* {Navbar(allAreasChosen, setAllAreasChosen)} */}
     </SafeAreaView>
   );
 }

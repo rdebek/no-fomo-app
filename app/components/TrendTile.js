@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import { Colors, pastelColors } from "../styles/Colors";
+import { pastelColors } from "../styles/Colors";
 import AnimateNumber from "react-native-animate-number";
 
 import { LineChart } from "react-native-gifted-charts";

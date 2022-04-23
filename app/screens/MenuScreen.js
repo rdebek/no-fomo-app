@@ -17,9 +17,9 @@ function MenuScreen({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.menuOptionView}
-          onPress={() => navigation.navigate("FollowedAreasScreen")}
+          onPress={() => navigation.navigate("Places")}
         >
-          <Text style={styles.menuOptionText}>Followed areas</Text>
+          <Text style={styles.menuOptionText}>Places</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.menuOptionView}
