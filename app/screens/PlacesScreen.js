@@ -6,14 +6,14 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import { styles } from "../styles/FollowedAreasScreenStyles";
+import { styles } from "../styles/PlacesScreenStyles";
 import { Picker } from "@react-native-picker/picker";
 import { getPlaces, getTrends } from "../components/Twitter";
 import { TrendTile } from "../components/TrendTile";
 import { formatData } from "../components/Twitter";
 import { Navbar } from "../components/Navbar";
 
-function Places({ navigation }) {
+function PlacesScreen({ navigation }) {
   const [selectedPlace, setSelectedPlace] = React.useState();
   const [availablePlaces, setAvailablePlaces] = React.useState([]);
   const [trends, setTrends] = React.useState();
@@ -31,7 +31,7 @@ function Places({ navigation }) {
   async function helperFunction(currentTrends) {
     data_array_of_arrays = [];
     for (let i = 0; i < currentTrends.length; i++) {
-      let data_array = await formatData(currentTrends[i].name);
+      let data_array = await formatData(currentTrends[i].name, "hour");
       data_array_of_arrays.push(data_array);
     }
     return data_array_of_arrays;
@@ -92,4 +92,4 @@ function Places({ navigation }) {
   );
 }
 
-export default FollowedAreasScreen;
+export default PlacesScreen;

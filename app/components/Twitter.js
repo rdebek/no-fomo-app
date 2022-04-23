@@ -59,13 +59,13 @@ export async function getTrends(woeid) {
   return helper;
 }
 
-async function getCounts(query) {
+async function getCounts(query, granularity) {
   let helper = [];
   let res = await post("https://no-fomo-backend.herokuapp.com/twitter", {
     auth: "fcdfa1d2961404557b54eeada355ddfc57469792d290a557f81544b8587d6a21",
     mode: "counts",
     query: query,
-    granularity: "hour",
+    granularity: granularity,
   });
   res = await res.json();
   await res.data.map((dataPoint) => {
@@ -74,9 +74,9 @@ async function getCounts(query) {
   return helper;
 }
 
-export const formatData = async (query) => {
+export const formatData = async (query, granularity) => {
   let helper = [];
-  let data = await getCounts(query);
+  let data = await getCounts(query, granularity);
   data.map((tweet_count) => {
     helper.push({
       value: tweet_count,

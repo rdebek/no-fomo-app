@@ -14,3 +14,12 @@ export const post = async (url, data) => {
     },
   });
 };
+
+export const getFollowedTrends = async (email) => {
+  const auth =
+    "fcdfa1d2961404557b54eeada355ddfc57469792d290a557f81544b8587d6a21";
+  return await fetch(
+    `https://no-fomo-backend.herokuapp.com/trends?auth=${auth}&email=${email}`,
+    { method: "GET" }
+  );
+};

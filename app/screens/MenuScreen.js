@@ -17,9 +17,15 @@ function MenuScreen({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.menuOptionView}
-          onPress={() => navigation.navigate("Places")}
+          onPress={() => navigation.navigate("PlacesScreen")}
         >
           <Text style={styles.menuOptionText}>Places</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuOptionView}
+          onPress={() => navigation.navigate("TrendsScreen")}
+        >
+          <Text style={styles.menuOptionText}>Trends</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.menuOptionView}

@@ -7,7 +7,8 @@ import RegisterScreen from "./app/screens/RegisterScreen";
 import EmailConfirmationScreen from "./app/screens/EmailConfirmationScreen";
 import MenuScreen from "./app/screens/MenuScreen";
 import MapScreen from "./app/screens/MapScreen";
-import Places from "./app/screens/Places";
+import PlacesScreen from "./app/screens/PlacesScreen";
+import TrendsScreen from "./app/screens/TrendsScreen";
 
 const stack = createNativeStackNavigator();
 
@@ -25,10 +26,8 @@ export default function App() {
         />
         <stack.Screen name="RegisterScreen" component={RegisterScreen} />
         <stack.Screen name="MenuScreen" component={MenuScreen} />
-        <stack.Screen
-          name="Places"
-          component={Places}
-        />
+        <stack.Screen name="PlacesScreen" component={PlacesScreen} />
+        <stack.Screen name="TrendsScreen" component={TrendsScreen} />
       </stack.Navigator>
     </NavigationContainer>
   );
