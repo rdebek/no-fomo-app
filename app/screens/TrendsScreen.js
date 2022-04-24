@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   Image,
   TextInput,
+  TouchableOpacity,
 } from "react-native";
 import { styles } from "../styles/TrendsScreenStyles";
 import { getValueFor } from "../components/SecureStore";
@@ -17,7 +18,10 @@ import * as Notifications from "expo-notifications";
 import { getFollowedTrends } from "../components/Api";
 import { height, width } from "../components/Utility";
 import { randomHSL } from "../components/Utility";
+import { Picker } from "@react-native-picker/picker";
 import { Ionicons, Feather } from "@expo/vector-icons";
+import NumericInput from "react-native-numeric-input";
+import { Colors } from "../styles/Colors";
 
 function TrendsScreen({ navigation }) {
   //   const email = getValueFor("login");
@@ -26,6 +30,7 @@ function TrendsScreen({ navigation }) {
   const [selectedTrend, setSelectedTrend] = React.useState();
   const [showModal, setShowModal] = React.useState(false);
   const [newTrendName, setNewTrendName] = React.useState();
+  const [percentage, setPercentage] = React.useState(0);
 
   const percentages = [];
 
@@ -60,19 +65,59 @@ function TrendsScreen({ navigation }) {
             shadowOpacity: 1,
           }}
         >
-          <Text onPress={() => setShowModal(!showModal)}>exit</Text>
-          <View style={{ alignItems: "center" }}>
+          <View style={{ alignItems: "center", marginTop: 20 }}>
+            <Text style={styles.modalText}>TREND</Text>
             <TextInput
               autoCorrect={false}
               spellCheck={false}
               autoCapitalize="none"
               selectionColor="black"
               style={styles.textInput}
-              placeholder={"example: elon musk, #lgbt"}
+              placeholder={"elon musk, #lgbt etc."}
               placeholderTextColor="gray"
               value={newTrendName}
               onChangeText={setNewTrendName}
             />
+            <Text style={styles.modalText}>RISE/FALL IN INTEREST(%)</Text>
+            <NumericInput
+              onChange={(value) => console.log(value)}
+              // iconStyle={{ color: "rgba( 255, 255, 255, 0 )" }}
+              inputStyle={{ fontSize: 30, fontWeight: "bold" }}
+              borderColor={"black"}
+              rightButtonBackgroundColor={"#77DD77"}
+              leftButtonBackgroundColor={"#ff6961"}
+              onLimitReached={(isMax, msg) =>
+                Alert.alert("Value must be between -300 and 300")
+              }
+              minValue={-301}
+              maxValue={301}
+              step={5}
+              totalWidth={200}
+              totalHeight={50}
+            />
+            <View style={{ width: "90%", marginTop: 15 }}>
+              <Text>
+                Once interest in certain trend rises or falls by specified %,
+                you will be notified via push notification.
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={{
+                backgroundColor: Colors.primary,
+                width: "50%",
+                height: "15%",
+                marginTop: 15,
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: "50%",
+              }}
+            >
+              <Text
+                style={{ fontSize: 25, fontWeight: "bold", color: "white" }}
+              >
+                ADD
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>

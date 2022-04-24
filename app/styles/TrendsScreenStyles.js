@@ -44,14 +44,19 @@ export const styles = StyleSheet.create({
   },
   textInput: {
     paddingHorizontal: 5,
-    margin: 5,
+    marginBottom: 15,
     borderColor: Colors.primary,
     borderWidth: 2,
     backgroundColor: "white",
-    width: "75%",
+    width: "85%",
     height: 50,
     fontSize: 20,
     color: "#101820FF",
     borderRadius: 10,
+  },
+  modalText: {
+    fontSize: 25,
+    fontWeight: "bold",
+    marginBottom: 10,
   },
 });
