@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { width } from "../components/Utility";
+import { Colors } from "./Colors";
 
 export const styles = StyleSheet.create({
   scrollContainer: {
@@ -8,6 +9,8 @@ export const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   tile: {
     width: width / 2.12,
@@ -19,11 +22,36 @@ export const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 1,
     borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
   },
   footerText: {
     fontSize: 25,
     fontWeight: "bold",
+  },
+  arrow: {
+    width: 15,
+    height: 15,
+  },
+  trendName: {
+    fontSize: 25,
+    fontWeight: "bold",
+  },
+  notificationPercentage: {
+    fontSize: 15,
+  },
+  currentPercentage: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  textInput: {
+    paddingHorizontal: 5,
+    margin: 5,
+    borderColor: Colors.primary,
+    borderWidth: 2,
+    backgroundColor: "white",
+    width: "75%",
+    height: 50,
+    fontSize: 20,
+    color: "#101820FF",
+    borderRadius: 10,
   },
 });
