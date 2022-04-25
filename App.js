@@ -9,6 +9,7 @@ import MenuScreen from "./app/screens/MenuScreen";
 import MapScreen from "./app/screens/MapScreen";
 import PlacesScreen from "./app/screens/PlacesScreen";
 import TrendsScreen from "./app/screens/TrendsScreen";
+import TrendDetailsScreen from "./app/screens/TrendDetailsScreen";
 
 const stack = createNativeStackNavigator();
 
@@ -28,6 +29,10 @@ export default function App() {
         <stack.Screen name="MenuScreen" component={MenuScreen} />
         <stack.Screen name="PlacesScreen" component={PlacesScreen} />
         <stack.Screen name="TrendsScreen" component={TrendsScreen} />
+        <stack.Screen
+          name="TrendDetailsScreen"
+          component={TrendDetailsScreen}
+        />
       </stack.Navigator>
     </NavigationContainer>
   );

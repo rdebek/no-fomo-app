@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   Image,
   TextInput,
+  Linking,
   TouchableOpacity,
 } from "react-native";
 import { styles } from "../styles/TrendsScreenStyles";
@@ -19,9 +20,10 @@ import { getFollowedTrends } from "../components/Api";
 import { height, width } from "../components/Utility";
 import { randomHSL } from "../components/Utility";
 import { Picker } from "@react-native-picker/picker";
-import { Ionicons, Feather } from "@expo/vector-icons";
+import { Ionicons, Feather, MaterialIcons } from "@expo/vector-icons";
 import NumericInput from "react-native-numeric-input";
-import { Colors } from "../styles/Colors";
+import { Colors, pastelColors } from "../styles/Colors";
+import { addNewTrend, removeTrend } from "../components/Api";
 
 function TrendsScreen({ navigation }) {
   //   const email = getValueFor("login");
@@ -35,10 +37,14 @@ function TrendsScreen({ navigation }) {
   const percentages = [];
 
   React.useEffect(async () => {
+    await refreshTiles();
+  }, []);
+
+  async function refreshTiles() {
     const res = await getFollowedTrends(email);
     const trends = await res.json();
-    setFollowedTrends(trends.data);
-  }, []);
+    setFollowedTrends(trends.data.reverse());
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -80,7 +86,7 @@ function TrendsScreen({ navigation }) {
             />
             <Text style={styles.modalText}>RISE/FALL IN INTEREST(%)</Text>
             <NumericInput
-              onChange={(value) => console.log(value)}
+              onChange={(value) => setPercentage(value)}
               // iconStyle={{ color: "rgba( 255, 255, 255, 0 )" }}
               inputStyle={{ fontSize: 30, fontWeight: "bold" }}
               borderColor={"black"}
@@ -110,6 +116,11 @@ function TrendsScreen({ navigation }) {
                 justifyContent: "center",
                 alignItems: "center",
                 borderRadius: "50%",
+              }}
+              onPress={async () => {
+                await handleTrendAdd();
+                await refreshTiles();
+                setShowModal(!showModal);
               }}
             >
               <Text
@@ -149,44 +160,93 @@ function TrendsScreen({ navigation }) {
       </View>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {followedTrends.map((trend, i) => (
-          <View style={styles.tile} key={i}>
+          <View style={[styles.tile, , { backgroundColor: "white" }]} key={i}>
             <View
               style={{
                 flexDirection: "row",
-                // justifyContent: "space-between",
+                justifyContent: "space-between",
               }}
             >
+              <MaterialIcons
+                name="read-more"
+                size={30}
+                style={{ marginHorizontal: 5, marginTop: 5 }}
+                color="black"
+                onPress={() => navigation.navigate("TrendDetailsScreen", trend)}
+              />
+              <Ionicons
+                name="ios-logo-twitter"
+                size={26}
+                style={{ marginHorizontal: 5, marginTop: 5 }}
+                color="black"
+                onPress={() =>
+                  Linking.openURL(
+                    `https://twitter.com/search?q=\"${trend.name}\"&src=typed_query&f=live`
+                  )
+                }
+              />
               <Feather
                 name="x"
-                size={26}
+                size={28}
                 color="black"
                 style={{ marginHorizontal: 5, marginTop: 5 }}
+                onPress={async () => {
+                  setFollowedTrends(
+                    followedTrends.filter((item) => item !== trend)
+                  );
+                  await handleTrendRemove(trend.name);
+                }}
               />
             </View>
             <View
               style={{
-                // justifyContent: "center",
+                width: "100%",
                 alignItems: "center",
-                flex: 1,
+                borderBottomWidth: 2,
+                paddingBottom: 2,
               }}
             >
-              <Text style={styles.trendName}>{trend.name}</Text>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  paddingVertical: 20,
-                }}
-              >
-                <Text style={styles.notificationPercentage}>
-                  Notification at:{" "}
-                </Text>
+              <Text style={styles.trendName} numberOfLines={1}>
+                {trend.name}
+              </Text>
+            </View>
+            <View
+              style={{
+                // flexDirection: "row",
+                // alignItems: "center",
+                // paddingVertical: 20,
+                // width: "100%",
+                backgroundColor: pastelColors[i % 4],
+                paddingTop: 10,
+              }}
+            >
+              <Text style={styles.notificationPercentage}>Notification</Text>
+              <View style={{ alignItems: "center" }}>
                 <Text style={styles.currentPercentage}>
                   {trend.percentage}%
                 </Text>
               </View>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Text>Currently: </Text>
+            </View>
+            <View
+              style={{
+                // flexDirection: "row",
+                backgroundColor: pastelColors[i % 4],
+                flex: 1,
+                borderBottomEndRadius: "20%",
+                borderBottomStartRadius: "20%",
+                // borderRadius: "50%",
+                // width: "100%",
+                // height: "50%",
+              }}
+            >
+              <Text style={styles.notificationPercentage}>Currently</Text>
+              <View
+                style={{
+                  alignItems: "center",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                }}
+              >
                 <Text style={styles.currentPercentage}>
                   {parseFloat(
                     getCurrentPercentage(trend["7_days_data"]["data"]).toFixed(
@@ -214,6 +274,16 @@ function TrendsScreen({ navigation }) {
       </ScrollView>
     </SafeAreaView>
   );
+
+  async function handleTrendAdd() {
+    const token = await getToken();
+    await addNewTrend(email, newTrendName, percentage, token);
+  }
+  async function handleTrendRemove(trend) {
+    const res = await removeTrend(email, trend);
+    const json = await res.json();
+    console.log(json);
+  }
 
   function getCurrentPercentage(data) {
     const counts_array = [];

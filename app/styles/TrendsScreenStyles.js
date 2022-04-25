@@ -30,16 +30,20 @@ export const styles = StyleSheet.create({
   arrow: {
     width: 15,
     height: 15,
+    marginLeft: 2,
   },
   trendName: {
     fontSize: 25,
     fontWeight: "bold",
+    marginHorizontal: 10,
   },
   notificationPercentage: {
     fontSize: 15,
+    marginLeft: 5,
+    fontWeight: "bold",
   },
   currentPercentage: {
-    fontSize: 20,
+    fontSize: 23,
     fontWeight: "bold",
   },
   textInput: {

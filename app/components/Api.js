@@ -23,3 +23,26 @@ export const getFollowedTrends = async (email) => {
     { method: "GET" }
   );
 };
+
+export const addNewTrend = async (email, trend, percentage, token) => {
+  const auth =
+    "fcdfa1d2961404557b54eeada355ddfc57469792d290a557f81544b8587d6a21";
+  return await post("https://no-fomo-backend.herokuapp.com/trends", {
+    email: email,
+    trend: trend,
+    percentage: percentage,
+    token: token,
+    auth: auth,
+    mode: "add",
+  });
+};
+export const removeTrend = async (email, trend) => {
+  const auth =
+    "fcdfa1d2961404557b54eeada355ddfc57469792d290a557f81544b8587d6a21";
+  return await post("https://no-fomo-backend.herokuapp.com/trends", {
+    email: email,
+    trend: trend,
+    auth: auth,
+    mode: "remove",
+  });
+};

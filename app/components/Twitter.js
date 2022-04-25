@@ -23,9 +23,9 @@ export const handleSearch = (
   chosenType
 ) => {
   let filter = parseFilter(chosenType);
-  let baseString = `https://twitter.com/search?q=${query
+  let baseString = `https://twitter.com/search?q=%22${query
     .trim()
-    .replace(" ", "%20")}%20geocode%3A${cords.latitude}%2C${
+    .replace(" ", "%20")}%22%20geocode%3A${cords.latitude}%2C${
     cords.longitude
   }%2C${radius}km%20${filter}%20min_faves%3A${minLikes}%20min_retweets%3A${minRetweets}&src=typed_query&f=live`;
   return baseString;
