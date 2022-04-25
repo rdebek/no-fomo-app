@@ -40,7 +40,10 @@ const styles = StyleSheet.create({
 
 export const TrendTile = (trend, i, data) => (
   <View
-    style={[styles.container, { backgroundColor: pastelColors[i % 4] }]}
+    style={[
+      styles.container,
+      { backgroundColor: pastelColors[i % pastelColors.length] },
+    ]}
     key={i}
   >
     <View style={styles.plotView}>

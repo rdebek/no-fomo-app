@@ -26,15 +26,12 @@ import { Colors, pastelColors } from "../styles/Colors";
 import { addNewTrend, removeTrend } from "../components/Api";
 
 function TrendsScreen({ navigation }) {
-  //   const email = getValueFor("login");
-  const email = "123";
+  const email = getValueFor("login");
   const [followedTrends, setFollowedTrends] = React.useState([]);
   const [selectedTrend, setSelectedTrend] = React.useState();
   const [showModal, setShowModal] = React.useState(false);
   const [newTrendName, setNewTrendName] = React.useState();
   const [percentage, setPercentage] = React.useState(0);
-
-  const percentages = [];
 
   React.useEffect(async () => {
     await refreshTiles();
@@ -160,7 +157,7 @@ function TrendsScreen({ navigation }) {
       </View>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {followedTrends.map((trend, i) => (
-          <View style={[styles.tile, , { backgroundColor: "white" }]} key={i}>
+          <View style={[styles.tile, { backgroundColor: "white" }]} key={i}>
             <View
               style={{
                 flexDirection: "row",
@@ -172,7 +169,10 @@ function TrendsScreen({ navigation }) {
                 size={30}
                 style={{ marginHorizontal: 5, marginTop: 5 }}
                 color="black"
-                onPress={() => navigation.navigate("TrendDetailsScreen", trend)}
+                onPress={() => {
+                  trend.color = pastelColors[i % pastelColors.length];
+                  navigation.navigate("TrendDetailsScreen", trend);
+                }}
               />
               <Ionicons
                 name="ios-logo-twitter"
@@ -210,14 +210,14 @@ function TrendsScreen({ navigation }) {
                 {trend.name}
               </Text>
             </View>
-            <View
+            <Pressable
               style={{
-                // flexDirection: "row",
-                // alignItems: "center",
-                // paddingVertical: 20,
-                // width: "100%",
-                backgroundColor: pastelColors[i % 4],
+                backgroundColor: pastelColors[i % pastelColors.length],
                 paddingTop: 10,
+              }}
+              onPress={() => {
+                trend.color = pastelColors[i % pastelColors.length];
+                navigation.navigate("TrendDetailsScreen", trend);
               }}
             >
               <Text style={styles.notificationPercentage}>Notification</Text>
@@ -226,17 +226,17 @@ function TrendsScreen({ navigation }) {
                   {trend.percentage}%
                 </Text>
               </View>
-            </View>
-            <View
+            </Pressable>
+            <Pressable
               style={{
-                // flexDirection: "row",
-                backgroundColor: pastelColors[i % 4],
+                backgroundColor: pastelColors[i % pastelColors.length],
                 flex: 1,
                 borderBottomEndRadius: "20%",
                 borderBottomStartRadius: "20%",
-                // borderRadius: "50%",
-                // width: "100%",
-                // height: "50%",
+              }}
+              onPress={() => {
+                trend.color = pastelColors[i % pastelColors.length];
+                navigation.navigate("TrendDetailsScreen", trend);
               }}
             >
               <Text style={styles.notificationPercentage}>Currently</Text>
@@ -248,27 +248,22 @@ function TrendsScreen({ navigation }) {
                 }}
               >
                 <Text style={styles.currentPercentage}>
-                  {parseFloat(
-                    getCurrentPercentage(trend["7_days_data"]["data"]).toFixed(
-                      2
-                    )
-                  )}
-                  %
+                  {parseFloat(getCurrentPercentage(trend).toFixed(2))}%
                 </Text>
-                {percentages[i] >= 0 && (
+                {trend.actualPercentage >= 0 && (
                   <Image
                     style={styles.arrow}
                     source={require("../assets/arrowUp.png")}
                   />
                 )}
-                {percentages[i] < 0 && (
+                {trend.actualPercentage < 0 && (
                   <Image
                     style={styles.arrow}
                     source={require("../assets/arrowDown.png")}
                   />
                 )}
               </View>
-            </View>
+            </Pressable>
           </View>
         ))}
       </ScrollView>
@@ -282,12 +277,11 @@ function TrendsScreen({ navigation }) {
   async function handleTrendRemove(trend) {
     const res = await removeTrend(email, trend);
     const json = await res.json();
-    console.log(json);
   }
 
-  function getCurrentPercentage(data) {
+  function getCurrentPercentage(trend) {
     const counts_array = [];
-    data.map((item) => {
+    trend["7_days_data"]["data"].map((item) => {
       counts_array.push(item.tweet_count);
     });
     const avg = computeAverage(counts_array.slice(0, counts_array.length - 1));
@@ -295,7 +289,7 @@ function TrendsScreen({ navigation }) {
       avg,
       counts_array[counts_array.length - 1]
     );
-    percentages.push(percentage);
+    trend.actualPercentage = percentage;
     return percentage;
   }
 
