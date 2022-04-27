@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   Alert,
   Modal,
-  StyleSheet,
   Text,
   Pressable,
   View,
   ScrollView,
   SafeAreaView,
   Image,
+  Animated,
   TextInput,
   Linking,
   TouchableOpacity,
@@ -18,9 +18,6 @@ import { styles } from "../styles/TrendsScreenStyles";
 import { getValueFor } from "../components/SecureStore";
 import * as Notifications from "expo-notifications";
 import { getFollowedTrends } from "../components/Api";
-import { height, width } from "../components/Utility";
-import { randomHSL } from "../components/Utility";
-import { Picker } from "@react-native-picker/picker";
 import { Ionicons, Feather, MaterialIcons } from "@expo/vector-icons";
 import NumericInput from "react-native-numeric-input";
 import { Colors, pastelColors } from "../styles/Colors";
@@ -33,6 +30,9 @@ function TrendsScreen({ navigation }) {
   const [newTrendName, setNewTrendName] = React.useState();
   const [percentage, setPercentage] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
+  const animation = Array(50)
+    .fill("Ref")
+    .map(() => useRef(new Animated.Value(1)).current);
 
   React.useEffect(async () => {
     await refreshTiles();
@@ -166,7 +166,16 @@ function TrendsScreen({ navigation }) {
       </View>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {followedTrends.map((trend, i) => (
-          <View style={[styles.tile, { backgroundColor: "white" }]} key={i}>
+          <Animated.View
+            style={[
+              styles.tile,
+              {
+                backgroundColor: "white",
+                transform: [{ scale: animation[i] }],
+              },
+            ]}
+            key={i}
+          >
             <View
               style={{
                 flexDirection: "row",
@@ -200,10 +209,17 @@ function TrendsScreen({ navigation }) {
                 color="black"
                 style={{ marginHorizontal: 5, marginTop: 5 }}
                 onPress={async () => {
-                  setFollowedTrends(
-                    followedTrends.filter((item) => item !== trend)
-                  );
-                  await handleTrendRemove(trend.name);
+                  Animated.timing(animation[i], {
+                    useNativeDriver: false,
+                    toValue: 0,
+                    duration: 1000,
+                  }).start(async () => {
+                    setFollowedTrends(
+                      followedTrends.filter((item) => item !== trend)
+                    );
+                    await handleTrendRemove(trend.name);
+                    animation[i].setValue(1);
+                  });
                 }}
               />
             </View>
@@ -273,7 +289,7 @@ function TrendsScreen({ navigation }) {
                 )}
               </View>
             </Pressable>
-          </View>
+          </Animated.View>
         ))}
       </ScrollView>
     </SafeAreaView>
@@ -285,7 +301,6 @@ function TrendsScreen({ navigation }) {
   }
   async function handleTrendRemove(trend) {
     const res = await removeTrend(email, trend);
-    const json = await res.json();
   }
 
   function getCurrentPercentage(trend) {

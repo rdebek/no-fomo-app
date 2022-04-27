@@ -65,9 +65,7 @@ export const TrendTile = (trend, i, data) => (
     </View>
 
     <View style={styles.trendNameView}>
-      <Text style={styles.trendNameText} onPress={() => console.log(data)}>
-        {trend.name}
-      </Text>
+      <Text style={styles.trendNameText}>{trend.name}</Text>
     </View>
     <View style={styles.tweetVolumeView}>
       <Text style={styles.tweetVolumeText}>
