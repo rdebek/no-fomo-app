@@ -12,6 +12,7 @@ import {
   TextInput,
   Linking,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { styles } from "../styles/TrendsScreenStyles";
 import { getValueFor } from "../components/SecureStore";
@@ -28,10 +29,10 @@ import { addNewTrend, removeTrend } from "../components/Api";
 function TrendsScreen({ navigation }) {
   const email = getValueFor("login");
   const [followedTrends, setFollowedTrends] = React.useState([]);
-  const [selectedTrend, setSelectedTrend] = React.useState();
   const [showModal, setShowModal] = React.useState(false);
   const [newTrendName, setNewTrendName] = React.useState();
   const [percentage, setPercentage] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(async () => {
     await refreshTiles();
@@ -115,8 +116,10 @@ function TrendsScreen({ navigation }) {
                 borderRadius: "50%",
               }}
               onPress={async () => {
+                setLoading(true);
                 await handleTrendAdd();
                 await refreshTiles();
+                setLoading(false);
                 setShowModal(!showModal);
               }}
             >
@@ -126,6 +129,12 @@ function TrendsScreen({ navigation }) {
                 ADD
               </Text>
             </TouchableOpacity>
+            <ActivityIndicator
+              size={"large"}
+              color="black"
+              style={{ marginTop: "5%" }}
+              animating={loading}
+            />
           </View>
         </View>
       </Modal>
@@ -290,6 +299,7 @@ function TrendsScreen({ navigation }) {
       counts_array[counts_array.length - 1]
     );
     trend.actualPercentage = percentage;
+    trend.avg = avg;
     return percentage;
   }
 

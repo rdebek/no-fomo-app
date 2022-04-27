@@ -1,9 +1,18 @@
 import React from "react";
-import { View, Text, SafeAreaView, Easing } from "react-native";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Easing,
+  Linking,
+  Pressable,
+} from "react-native";
 import { BarChart } from "react-native-gifted-charts";
 import { styles } from "../styles/TrendDetailsScreenStyles";
 import { Ionicons } from "@expo/vector-icons";
 import { width, height } from "../components/Utility";
+import { StatsRow } from "../components/StatsRow";
+import { Colors } from "../styles/Colors";
 
 function TrendDetailsScreen({ route, navigation }) {
   const trend = route.params;
@@ -32,18 +41,25 @@ function TrendDetailsScreen({ route, navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.footer}>
-        <View style={styles.footerItem}>
-          <Ionicons
-            name="arrow-back-circle"
-            size={40}
-            color="black"
-            onPress={() => navigation.navigate("TrendsScreen")}
-          />
-        </View>
+        <Pressable
+          style={styles.footerItem}
+          onPress={() => navigation.navigate("TrendsScreen")}
+        >
+          <Ionicons name="arrow-back-circle" size={40} color="black" />
+        </Pressable>
         <View style={styles.footerMainSection}>
           <Text style={styles.footerText}>{trend.name}</Text>
         </View>
-        <View style={styles.footerItem} />
+        <Pressable
+          style={styles.footerItem}
+          onPress={() =>
+            Linking.openURL(
+              `https://twitter.com/search?q=\"${trend.name}\"&src=typed_query&f=live`
+            )
+          }
+        >
+          <Ionicons name="ios-logo-twitter" size={40} color="black" />
+        </Pressable>
       </View>
       <View style={styles.chartView}>
         <BarChart
@@ -60,6 +76,7 @@ function TrendDetailsScreen({ route, navigation }) {
           yAxisLabelSuffix={kFlag ? "k" : ""}
           animationDuration={800}
           //   cappedBars={true}
+          // maxValue={Math.max(data.map((dataPoint) => dataPoint.value))}
           //   capColor="red"
           frontColor={trend.color}
           barBorderRadius={5}
@@ -68,10 +85,29 @@ function TrendDetailsScreen({ route, navigation }) {
           xAxisThickness={2}
           yAxisThickness={2}
           hideOrigin={true}
+          // lineData={{value: }}
         />
       </View>
-
-      <Text onPress={() => console.log(trend)}> help</Text>
+      <View style={styles.statsView}>
+        {StatsRow(
+          "Total tweets",
+          trend["7_days_data"]["total_count"],
+          trend.color
+        )}
+        {StatsRow("Average daily tweets", parseInt(trend.avg), trend.color)}
+        {StatsRow(
+          "Today tweets",
+          trend["7_days_data"]["data"].at(-1)["tweet_count"],
+          trend.color
+        )}
+        {StatsRow(
+          "Percentage change",
+          parseFloat(trend.actualPercentage.toFixed(2)),
+          trend.color,
+          1,
+          true
+        )}
+      </View>
     </SafeAreaView>
   );
 }

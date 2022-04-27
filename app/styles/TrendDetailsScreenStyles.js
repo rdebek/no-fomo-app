@@ -9,6 +9,8 @@ export const styles = StyleSheet.create({
   },
   footerItem: {
     flex: 0.15,
+    justifyContent: "center",
+    alignItems: "center",
   },
   footerText: {
     fontSize: 25,
@@ -25,5 +27,8 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     borderBottomWidth: 2,
     paddingTop: 20,
+  },
+  statsView: {
+    flex: 1,
   },
 });
