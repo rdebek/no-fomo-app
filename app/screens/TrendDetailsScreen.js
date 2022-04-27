@@ -4,12 +4,13 @@ import {
   Text,
   SafeAreaView,
   Easing,
+  Image,
   Linking,
   Pressable,
 } from "react-native";
 import { BarChart } from "react-native-gifted-charts";
 import { styles } from "../styles/TrendDetailsScreenStyles";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Feather } from "@expo/vector-icons";
 import { width, height } from "../components/Utility";
 import { StatsRow } from "../components/StatsRow";
 import { Colors } from "../styles/Colors";
@@ -107,6 +108,15 @@ function TrendDetailsScreen({ route, navigation }) {
           1,
           true
         )}
+        <View style={styles.arrowView}>
+          <Text style={styles.statsRowText}>Overall trend</Text>
+          {parseFloat(trend.actualPercentage.toFixed(2)) >= 0 && (
+            <Feather name="arrow-up-right" size={70} color={trend.color} />
+          )}
+          {parseFloat(trend.actualPercentage.toFixed(2)) < 0 && (
+            <Feather name="arrow-down-right" size={70} color={trend.color} />
+          )}
+        </View>
       </View>
     </SafeAreaView>
   );

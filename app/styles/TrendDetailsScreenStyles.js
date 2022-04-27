@@ -31,4 +31,14 @@ export const styles = StyleSheet.create({
   statsView: {
     flex: 1,
   },
+  arrowView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flex: 1,
+  },
+  statsRowText: {
+    margin: "3%",
+    fontSize: 20,
+  },
 });

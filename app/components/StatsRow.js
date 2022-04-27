@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    borderBottomWidth: 1,
   },
   statsRowText: {
     margin: "3%",
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
   },
   statsRowNumber: {
     margin: "3%",
-    fontSize: 30,
+    fontSize: 35,
   },
 });
 
