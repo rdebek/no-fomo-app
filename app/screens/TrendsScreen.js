@@ -24,7 +24,6 @@ import { Colors, pastelColors } from "../styles/Colors";
 import { addNewTrend, removeTrend } from "../components/Api";
 
 function TrendsScreen({ navigation }) {
-  const email = getValueFor("login");
   const [followedTrends, setFollowedTrends] = React.useState([]);
   const [showModal, setShowModal] = React.useState(false);
   const [newTrendName, setNewTrendName] = React.useState();
@@ -39,6 +38,7 @@ function TrendsScreen({ navigation }) {
   }, []);
 
   async function refreshTiles() {
+    const email = await getValueFor("login");
     const res = await getFollowedTrends(email);
     const trends = await res.json();
     setFollowedTrends(trends.data.reverse());
@@ -296,10 +296,12 @@ function TrendsScreen({ navigation }) {
   );
 
   async function handleTrendAdd() {
+    const email = await getValueFor("login");
     const token = await getToken();
     await addNewTrend(email, newTrendName, percentage, token);
   }
   async function handleTrendRemove(trend) {
+    const email = await getValueFor("login");
     const res = await removeTrend(email, trend);
   }
 
